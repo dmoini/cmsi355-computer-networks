@@ -7,8 +7,10 @@ class ThreadedTCPServer(socketserver.ThreadingMixIn, socketserver.TCPServer):
 class EchoHandler(socketserver.StreamRequestHandler):
     def handle(self):
         print(f'Handling a client on {threading.currentThread().getName()}')
-        data = self.rfile.readline().strip()
-        self.wfile.write(data.decode('utf-8').encode('utf-8'))
+        while True:
+            data = self.rfile.readline().strip()
+            # self.wfile.write(data.decode('utf-8').encode('utf-8'))
+            self.wfile.write(data)
 
 if __name__ == '__main__':
     server = ThreadedTCPServer(('', 43210), EchoHandler)
