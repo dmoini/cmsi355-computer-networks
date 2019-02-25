@@ -6,14 +6,17 @@ class ThreadedTCPServer(socketserver.ThreadingMixIn, socketserver.TCPServer):
 
 class EchoHandler(socketserver.StreamRequestHandler):
     def handle(self):
-        print(f'Handling a client on {threading.currentThread().getName()}')
+        client = f'{self.client_address} on {threading.currentThread().getName()}'
+        print(f'Connected: {client}')
         while True:
-            data = self.rfile.readline().strip()
-            # self.wfile.write(data.decode('utf-8').encode('utf-8'))
-            self.wfile.write(data)
+            data = self.rfile.readline()
+            if not data:
+                break
+           
+            self.wfile.write(data.decode('utf-8').encode('utf-8'))
+        print(f'Closed: {client}')
 
 if __name__ == '__main__':
-    server = ThreadedTCPServer(('', 43210), EchoHandler)
-    with server:
-        print(f'The echo server is running')
+    with ThreadedTCPServer(('', 43210), EchoHandler) as server:
+        print(f'The echo server is running...')
         server.serve_forever()
