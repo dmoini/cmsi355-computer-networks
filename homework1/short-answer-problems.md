@@ -39,4 +39,4 @@
    - 60 bytes
 
 10. Why don’t Node.js servers need threads?
-   - Node.js servers do not need multiple threads because they are event-driven and run processes asynchronously on single thread.
+    - Node.js servers do not need multiple threads because they are event-driven and run processes asynchronously on single thread.
