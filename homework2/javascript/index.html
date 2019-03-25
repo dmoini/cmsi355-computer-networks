@@ -1,0 +1,15 @@
+<html>
+    <p>hello</p>
+    <p>IP Address of Server: <input id="ip" type="text"></p>
+    <p><button id="go">Get Random Number</button></p>
+    <p id="response"></p>
+</html>
+<script src="/socket.io/socket.io.js"></script>
+<script>
+  const host = document.querySelector('#ip').value;
+  const socket = io.connect(`http://${host}`);
+  socket.on('news', function (data) {
+    console.log(data);
+    socket.emit('my other event', { my: 'hello' });
+  });
+</script>
