@@ -71,4 +71,6 @@
 22. To what socket functions do read and write correspond?
     - recv and send respectively.
 23) Does a client ever use bind? Explain.
-    - No. <!-- TODO: explain -->
+    - It is unnecessary for a client to use bind as the operating system automatically assigns a socket to an open port.
+    However, a client is able to use bind to manually assign a socket to an open port.
+    In the case the socket is assigned to a port already in use, bind throws an error.
