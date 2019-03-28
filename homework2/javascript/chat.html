@@ -56,29 +56,6 @@
       $(() => {
         let socket = io();
         let username;
-        // let invalidUsername = true;
-        // while (invalidUsername) {
-        //   console.log("starting while loop");
-        //   username = prompt("Please enter a username.");
-        //   if (!username) {
-        //     alert("Please enter a non-empty username.");
-        //     continue;
-        //   } else {
-        //     console.log("fuck this", username);
-        //     socket.emit("username", username);
-        //     console.log("fuck this part 2", username);
-        //     break;
-        //   }
-        //   //   socket.on('taken username', (taken) => {
-        //   //           console.log('socket on taken username')
-        //   //           if (!taken) {
-        //   //             invalidUsername = false;
-        //   //             // break;
-        //   //           } else {
-        //   //             alert('Username already taken.');
-        //   //           }
-        //   //         })
-        // }
         function validUsername() {
           username = prompt("enter a username");
           if (!username) {
