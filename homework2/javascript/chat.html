@@ -32,11 +32,11 @@
           if (!username) {
             alert('Please enter a non-empty username.')
             continue;
-          } else {
-            console.log('fuck this', username);
-            socket.emit('username', username);
-            console.log('fuck this part 2', username);
-          }
+          } 
+          console.log('fuck this', username);
+          socket.emit('username', username);
+          console.log('fuck this part 2', username);
+          
         //   socket.on('taken username', (taken) => {
         //           console.log('socket on taken username')
         //           if (!taken) {
