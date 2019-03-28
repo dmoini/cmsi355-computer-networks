@@ -1,22 +1,23 @@
-const WebSocket = require("ws");
-const http = require("http");
-const server = new WebSocket.Server({ port: 58901 });
+const app = require("express")();
+const app = require("express")();
+const server = require("http").Server(app);
+const io = require("socket.io")(server);
 
-let name = new Set();
-let writers = new Set();
+server.listen(53211);
 
-server.broadcast = function broadcast(data) {
-  server.clients.forEach(function each(client) {
-    if (client.readyState === WebSocket.OPEN) {
-      client.send(data);
-    }
+app.get("/", function(req, res) {
+  res.sendFile(__dirname + "/chat.html");
+});
+
+io.on("connection", socket => {
+  console.log("A new player has joined!");
+  socket.on("username", data => {
+    socket.username = data.username;
   });
-};
-
-(() => {
-  server.on("connection", (socket, req) => {
-    console.log("Connection from", req.connection.remoteAddress);
-    writers.push(socket);
+  socket.on("message", data => {
+    io.sockets.emit("message", {
+      username: socket.username,
+      message: data.message,
+    });
   });
-  console.log("The chat server is running...");
-})();
+});
