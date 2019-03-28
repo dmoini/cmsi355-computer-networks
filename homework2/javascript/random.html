@@ -1,3 +1,21 @@
+<!DOCTYPE html>
 <html>
-  <p>random</p>
+  <p>Random Number Generator</p>
+  <p>IP Address of Server: <input id="ip" type="text" /></p>
+  <p>
+    <button id="go" onclick="window.location='/random';">
+      Get Random Number
+    </button>
+  </p>
+  <p id="response"></p>
 </html>
+<script src="/socket.io/socket.io.js"></script>
+<script>
+  const host = document.querySelector("#ip").value;
+  const socket = io.connect(`http://${host}`);
+
+  socket.on("random", function(data) {
+    console.log(data);
+    socket.emit("Connected", "Wassup server!");
+  });
+</script>

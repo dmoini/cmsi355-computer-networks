@@ -5,7 +5,7 @@ const io = require("socket.io")(server);
 server.listen(53211);
 
 app.get("/", function(req, res) {
-  res.sendFile(__dirname + "/index.html");
+  res.sendFile(__dirname + "/random.html");
 });
 
 app.get("/random", function(req, res) {
