@@ -49,10 +49,10 @@ io.on("connection", socket => {
       // console.log("SPACE INDEX: " + spaceIndex, "COMMAND: " + command, "||", "MESSAGE: " + message);
       switch(command) {
         case "help":
-          let commandInfoString = '';
-          for (k in commandsInfo) {
-            commandInfoString += k + ": " + commandsInfo[k] + "\n";
-          }
+          let commandInfoString = JSON.stringify(commandsInfo, null, 4);
+          // for (k in commandsInfo) {
+          //   commandInfoString += k + ": " + commandsInfo[k] + "\n";
+          // }
           socket.emit("help command", commandInfoString);
           break;
         case "link":

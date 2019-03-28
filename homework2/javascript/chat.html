@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Socket.IO chat</title>
+    <title>Simple Chat Server</title>
+    <!-- Credit to https://socket.io/get-started/chat/#Serving-HTML for CSS -->
     <style>
       * {
         margin: 0;
@@ -105,13 +106,15 @@
           postMessage(msg);
         });
         socket.on("help command", (commandsInfo) => {
+          console.log(commandsInfo);
           alert(commandsInfo);
         });
         socket.on("link command", (linkObj) => {
           postLink(linkObj.user, linkObj.link);
         });
         socket.on("quit command", () => {
-          alert("You have left the server.");
+          alert("You have left the server");
+          postMessage("You have left the chat")
         });
         socket.on("unrecognized command", (command) => {
           alert("Unrecognized command: " + command);
