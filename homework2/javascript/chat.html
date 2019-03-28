@@ -63,9 +63,7 @@
             validUsername();
           } else {
             socket.emit("username", username);
-            console.log("emitted success!");
             socket.on("taken username", taken => {
-              console.log("socket on taken username");
               if (!taken) {
                 return;
               } else {
