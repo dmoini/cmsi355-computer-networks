@@ -32,7 +32,7 @@
       }
       #messages {
         list-style-type: none;
-        margin: 0;
+        margin-bottom: 40px;
         padding: 0;
       }
       #messages li {
@@ -51,7 +51,7 @@
       </button>
     </form>
     <script src="/socket.io/socket.io.js"></script>
-    <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script>
       $(() => {
         let socket = io();
@@ -73,19 +73,49 @@
             });
           }
         }
-
         validUsername();
+
+        let postMessage = (msg) => {
+          $("#messages").append($("<li>").text(msg));
+        }
+
+        let postLink = (user, link) => {
+          let url = !link.startsWith("http") ? "https://" + link : link;
+          $("#messages").append(
+            $("<li>").text(user + ": ").append(
+              $("<a>").text(link).attr({
+                href: url,
+                target: "_blank"
+              })
+            ));
+        }
 
         $("form").submit(e => {
           e.preventDefault(); // prevents page reloading
-          socket.emit("message", username + ": " + $("#m").val());
-          $("#m").val("");
+          let message = $("#m").val();
+          if (message.trim() !== "") {
+            // console.log("CHAT.HTML: " + message);
+            let data = {user: username, msg: message.trim()};
+            socket.emit("message", data);
+            $("#m").val("");
+          }
           return false;
         });
         socket.on("message", msg => {
-          console.log(msg.message);
-          $("#messages").append($("<li>").text(msg));
+          postMessage(msg);
         });
+        socket.on("help command", (commandsInfo) => {
+          alert(commandsInfo);
+        });
+        socket.on("link command", (linkObj) => {
+          postLink(linkObj.user, linkObj.link);
+        });
+        socket.on("quit command", () => {
+          alert("You have left the server.");
+        });
+        socket.on("unrecognized command", (command) => {
+          alert("Unrecognized command: " + command);
+        }); 
       });
     </script>
   </body>
