@@ -58,28 +58,18 @@
       $(() => {
         let socket = io();
         let username;
-        function validUsername() {
-          username = prompt("Please enter a username");
-          if (!username) {
-            alert("Please enter a non-empty username.");
-            validUsername();
-          } else {
-            socket.emit("username", username);
-            socket.on("taken username", taken => {
-              if (!taken) {
-                return;
-              } else {
-                alert("Username already taken.");
-                validUsername();
-              }
-            });
-            socket.on("max users", () => {
-              alert("Max users allowed!");
-              validUsername();
-            });
-          }
-        }
-        validUsername();
+        username = prompt("Please enter a username");
+
+        socket.emit("username", username);
+
+        socket.on("username declined", () => {
+          username = prompt("Username already taken. Please enter another.");
+          socket.emit("username", username);
+        });
+
+        socket.on("max users", () => {
+          alert("Chat room is full!");
+        });
 
         let clearTextBox = () => {
           $("#m").val("");

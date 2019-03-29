@@ -22,32 +22,26 @@ const commandsInfo = {
 };
 
 io.on("connection", socket => {
-  //   if (users.length === MAX_NUMBER_OF_USERS) {
-  //     console.log("CHATROOM FULL");
-  //     socket.emit("chat room is full");
-  //     setTimeout(() => socket.disconnect(true), 100);
-  //     // return;
-  //   }
-
   console.log("A new user has joined the chat!");
 
   socket.on("username", data => {
     console.log(data);
 
     if (users.includes(data)) {
-      socket.emit("taken username", true);
+      socket.emit("username declined");
       console.log("Username " + data + " is taken");
     } else {
       console.log("Username " + data + " was accepted");
-      socket.emit("taken username", false);
       users.push(data);
       socket.username = data;
-      if (users.length - 1 == MAX_NUMBER_OF_USERS) {
+      if (users.length - 1 === MAX_NUMBER_OF_USERS) {
         socket.emit("max users");
         users = users.filter(e => e !== socket.username);
+        socket.disconnect(true);
+      } else {
+        io.emit("message", socket.username + " has joined the chat");
+        console.log(users);
       }
-      io.emit("message", socket.username + " has joined the chat");
-      console.log(users);
     }
   });
 
