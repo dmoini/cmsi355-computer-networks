@@ -35,6 +35,7 @@
         list-style-type: none;
         margin-bottom: 40px;
         padding: 0;
+        overflow-y: auto;
       }
       #messages li {
         padding: 5px 10px;
@@ -64,7 +65,7 @@
             validUsername();
           } else {
             socket.emit("username", username);
-            socket.on("taken username", taken => {
+            socket.on("taken username", (taken) => {
               if (!taken) {
                 return;
               } else {
@@ -75,6 +76,10 @@
           }
         }
         validUsername();
+
+        let clearTextBox = () => {
+          $("#m").val("");
+        }
 
         let postMessage = (msg) => {
           $("#messages").append($("<li>").text(msg));
@@ -93,27 +98,29 @@
 
         $("form").submit(e => {
           e.preventDefault(); // prevents page reloading
-          let message = $("#m").val();
-          if (message.trim() !== "") {
-            // console.log("CHAT.HTML: " + message);
-            let data = {user: username, msg: message.trim()};
+          let message = $("#m").val().trim();
+          if (message !== "") {
+            let data = {user: username, msg: message};
             socket.emit("message", data);
-            $("#m").val("");
+            clearTextBox();
           }
           return false;
         });
-        socket.on("message", msg => {
+
+        socket.on("message", (msg) => {
           postMessage(msg);
         });
         socket.on("help command", (commandsInfo) => {
-          console.log(commandsInfo);
           alert(commandsInfo);
         });
         socket.on("link command", (linkObj) => {
           postLink(linkObj.user, linkObj.link);
         });
+        socket.on("list users command", (users) => {
+          postMessage("USERS: " + users);
+        });
         socket.on("quit command", () => {
-          alert("You have left the server");
+          alert("You have left the chat");
           postMessage("You have left the chat")
         });
         socket.on("unrecognized command", (command) => {

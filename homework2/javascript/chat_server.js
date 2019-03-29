@@ -11,15 +11,22 @@ app.get("/", function(req, res) {
 });
 
 let users = [];
+const MAX_NUMBER_OF_USERS = 2;
 const commandsInfo = {
   "/help": "view available commands and descriptions",
   "/link <text>": "posts url of <text>",
+  "/listusers": "lists all current users in chatroom",
   "/scream <text>": "capitalizes <text>",
-  "/quit": "view available commands and descriptions",
+  "/quit": "leave chat",
   "/whisper <text>": "lowercases <text>",
 }
 
 io.on("connection", socket => {
+  if (users.length === MAX_NUMBER_OF_USERS) {
+    socket.emit("chat room is full");
+    // return;
+  }
+
   console.log("A new user has joined the chat!");
 
   socket.on("username", data => {
@@ -42,17 +49,21 @@ io.on("connection", socket => {
     console.log(data);
     let user = data.user;
     let msg = data.msg;
+    if (msg.length > 280) {
+      msg = msg.substring(0, 281);
+    }
     if (msg.startsWith("/")) {
       let spaceIndex = msg.indexOf(" ");
       let command = spaceIndex === -1 ? msg.substring(1) : msg.substring(1, spaceIndex);
       let message = spaceIndex === -1 ? "" : msg.substring(spaceIndex + 1).trim();
-      // console.log("SPACE INDEX: " + spaceIndex, "COMMAND: " + command, "||", "MESSAGE: " + message);
       switch(command) {
         case "help":
-          let commandInfoString = JSON.stringify(commandsInfo, null, 4);
-          // for (k in commandsInfo) {
-          //   commandInfoString += k + ": " + commandsInfo[k] + "\n";
-          // }
+          let commandInfoString = '';
+          // let commandInfoString = JSON.stringify(commandsInfo, null, 4);
+          // socket.emit("help command", commandInfoString.substring(1, commandInfoString.length - 1));
+          for (k in commandsInfo) {
+            commandInfoString += k + ": " + commandsInfo[k] + "\n";
+          }
           socket.emit("help command", commandInfoString);
           break;
         case "link":
@@ -61,7 +72,10 @@ io.on("connection", socket => {
             link: message,
           }
           io.emit("link command", linkObj);
-          break;      
+          break;  
+        case "listusers":
+          socket.emit("list users command", users.join(", "));
+          break;    
         case "scream":
           io.emit("message", user + ": " + message.toUpperCase());
           break;
@@ -83,7 +97,9 @@ io.on("connection", socket => {
 
   socket.on("disconnect", () => {
     users = users.filter(e => e !== socket.username);
-    io.emit("message", socket.username + " has left the chat");
+    if (socket.username) {
+      io.emit("message", socket.username + " has left the chat");
+    }
     console.log("A user has disconnected :(");
     console.log(users);
   });
