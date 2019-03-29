@@ -22,10 +22,12 @@ const commandsInfo = {
 }
 
 io.on("connection", socket => {
-  if (users.length === MAX_NUMBER_OF_USERS) {
-    socket.emit("chat room is full");
-    // return;
-  }
+  // if (users.length === MAX_NUMBER_OF_USERS) {
+  //   console.log("CHATROOM FULL");
+  //   socket.emit("chat room is full");
+  //   setTimeout(() => socket.disconnect(true), 100);
+  //   // return;
+  // }
 
   console.log("A new user has joined the chat!");
 
