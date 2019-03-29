@@ -19,20 +19,21 @@ const commandsInfo = {
   "/scream <text>": "capitalizes <text>",
   "/quit": "leave chat",
   "/whisper <text>": "lowercases <text>",
-}
+};
 
 io.on("connection", socket => {
-  // if (users.length === MAX_NUMBER_OF_USERS) {
-  //   console.log("CHATROOM FULL");
-  //   socket.emit("chat room is full");
-  //   setTimeout(() => socket.disconnect(true), 100);
-  //   // return;
-  // }
+  //   if (users.length === MAX_NUMBER_OF_USERS) {
+  //     console.log("CHATROOM FULL");
+  //     socket.emit("chat room is full");
+  //     setTimeout(() => socket.disconnect(true), 100);
+  //     // return;
+  //   }
 
   console.log("A new user has joined the chat!");
 
   socket.on("username", data => {
     console.log(data);
+
     if (users.includes(data)) {
       socket.emit("taken username", true);
       console.log("Username " + data + " is taken");
@@ -41,12 +42,16 @@ io.on("connection", socket => {
       socket.emit("taken username", false);
       users.push(data);
       socket.username = data;
+      if (users.length - 1 == MAX_NUMBER_OF_USERS) {
+        socket.emit("max users");
+        users = users.filter(e => e !== socket.username);
+      }
       io.emit("message", socket.username + " has joined the chat");
       console.log(users);
     }
   });
 
-  socket.on("message", (data) => {
+  socket.on("message", data => {
     console.log("====================");
     console.log(data);
     let user = data.user;
@@ -56,13 +61,13 @@ io.on("connection", socket => {
     }
     if (msg.startsWith("/")) {
       let spaceIndex = msg.indexOf(" ");
-      let command = spaceIndex === -1 ? msg.substring(1) : msg.substring(1, spaceIndex);
-      let message = spaceIndex === -1 ? "" : msg.substring(spaceIndex + 1).trim();
-      switch(command) {
+      let command =
+        spaceIndex === -1 ? msg.substring(1) : msg.substring(1, spaceIndex);
+      let message =
+        spaceIndex === -1 ? "" : msg.substring(spaceIndex + 1).trim();
+      switch (command) {
         case "help":
-          let commandInfoString = '';
-          // let commandInfoString = JSON.stringify(commandsInfo, null, 4);
-          // socket.emit("help command", commandInfoString.substring(1, commandInfoString.length - 1));
+          let commandInfoString = "";
           for (k in commandsInfo) {
             commandInfoString += k + ": " + commandsInfo[k] + "\n";
           }
@@ -72,12 +77,12 @@ io.on("connection", socket => {
           let linkObj = {
             user: user,
             link: message,
-          }
+          };
           io.emit("link command", linkObj);
-          break;  
+          break;
         case "listusers":
           socket.emit("list users command", users.join(", "));
-          break;    
+          break;
         case "scream":
           io.emit("message", user + ": " + message.toUpperCase());
           break;
@@ -90,7 +95,7 @@ io.on("connection", socket => {
           setTimeout(() => socket.disconnect(true), 100);
           break;
         default:
-          socket.emit("unrecognized command", command)
+          socket.emit("unrecognized command", command);
       }
     } else {
       io.emit("message", user + ": " + msg);

@@ -65,7 +65,7 @@
             validUsername();
           } else {
             socket.emit("username", username);
-            socket.on("taken username", (taken) => {
+            socket.on("taken username", taken => {
               if (!taken) {
                 return;
               } else {
@@ -73,34 +73,45 @@
                 validUsername();
               }
             });
+            socket.on("max users", () => {
+              alert("Max users allowed!");
+              validUsername();
+            });
           }
         }
         validUsername();
 
         let clearTextBox = () => {
           $("#m").val("");
-        }
+        };
 
-        let postMessage = (msg) => {
+        let postMessage = msg => {
           $("#messages").append($("<li>").text(msg));
-        }
+        };
 
         let postLink = (user, link) => {
           let url = !link.startsWith("http") ? "https://" + link : link;
           $("#messages").append(
-            $("<li>").text(user + ": ").append(
-              $("<a>").text(link).attr({
-                href: url,
-                target: "_blank"
-              })
-            ));
-        }
+            $("<li>")
+              .text(user + ": ")
+              .append(
+                $("<a>")
+                  .text(link)
+                  .attr({
+                    href: url,
+                    target: "_blank",
+                  })
+              )
+          );
+        };
 
         $("form").submit(e => {
           e.preventDefault(); // prevents page reloading
-          let message = $("#m").val().trim();
+          let message = $("#m")
+            .val()
+            .trim();
           if (message !== "") {
-            let data = {user: username, msg: message};
+            let data = { user: username, msg: message };
             socket.emit("message", data);
             clearTextBox();
           }
@@ -110,25 +121,25 @@
         // socket.on("chat rom is full", () => {
         //   alert("Chatroom is full. Please try to join another time.")
         // });
-        socket.on("message", (msg) => {
+        socket.on("message", msg => {
           postMessage(msg);
         });
-        socket.on("help command", (commandsInfo) => {
+        socket.on("help command", commandsInfo => {
           alert(commandsInfo);
         });
-        socket.on("link command", (linkObj) => {
+        socket.on("link command", linkObj => {
           postLink(linkObj.user, linkObj.link);
         });
-        socket.on("list users command", (users) => {
+        socket.on("list users command", users => {
           postMessage("USERS: " + users);
         });
         socket.on("quit command", () => {
           alert("You have left the chat");
-          postMessage("You have left the chat")
+          postMessage("You have left the chat");
         });
-        socket.on("unrecognized command", (command) => {
+        socket.on("unrecognized command", command => {
           alert("Unrecognized command: " + command);
-        }); 
+        });
       });
     </script>
   </body>
