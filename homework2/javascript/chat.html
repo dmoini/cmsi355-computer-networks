@@ -79,6 +79,7 @@
             });
           }
         }
+
         validUsername();
 
         let clearTextBox = () => {
@@ -91,13 +92,8 @@
 
         let postLink = (user, link) => {
           let url = !link.startsWith("http") ? "https://" + link : link;
-          $("#messages").append(
-            $("<li>")
-              .text(user + ": ")
-              .append(
-                $("<a>")
-                  .text(link)
-                  .attr({
+          $("#messages").append($("<li>").text(user + ": ").append(
+                $("<a>").text(link).attr({
                     href: url,
                     target: "_blank",
                   })
@@ -107,9 +103,7 @@
 
         $("form").submit(e => {
           e.preventDefault(); // prevents page reloading
-          let message = $("#m")
-            .val()
-            .trim();
+          let message = $("#m").val().trim();
           if (message !== "") {
             let data = { user: username, msg: message };
             socket.emit("message", data);
@@ -118,9 +112,6 @@
           return false;
         });
 
-        // socket.on("chat rom is full", () => {
-        //   alert("Chatroom is full. Please try to join another time.")
-        // });
         socket.on("message", msg => {
           postMessage(msg);
         });
