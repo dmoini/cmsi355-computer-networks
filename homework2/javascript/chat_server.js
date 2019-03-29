@@ -11,7 +11,7 @@ app.get("/", function(req, res) {
 });
 
 let users = [];
-const MAX_NUMBER_OF_USERS = 2;
+const MAX_NUMBER_OF_USERS = 20;
 const commandsInfo = {
   "/help": "view available commands and descriptions",
   "/link <text>": "posts url of <text>",
@@ -25,8 +25,6 @@ io.on("connection", socket => {
   console.log("A new user has joined the chat!");
 
   socket.on("username", data => {
-    console.log(data);
-
     if (users.includes(data)) {
       socket.emit("username declined");
       console.log("Username " + data + " is taken");
@@ -46,8 +44,6 @@ io.on("connection", socket => {
   });
 
   socket.on("message", data => {
-    console.log("====================");
-    console.log(data);
     let user = data.user;
     let msg = data.msg;
     if (msg.length > 280) {
@@ -75,7 +71,7 @@ io.on("connection", socket => {
           io.emit("link command", linkObj);
           break;
         case "listusers":
-          socket.emit("list users command", users.join(", "));
+          socket.emit("list users command", "[" + users.join(", ") + "]");
           break;
         case "scream":
           io.emit("message", user + ": " + message.toUpperCase());
@@ -102,6 +98,6 @@ io.on("connection", socket => {
       io.emit("message", socket.username + " has left the chat");
     }
     console.log("A user has disconnected :(");
-    console.log(users);
+    console.log("Chat users remaining: [" + users.join(",") + "]");
   });
 });

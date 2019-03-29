@@ -108,9 +108,6 @@
           return false;
         });
 
-        // socket.on("chat rom is full", () => {
-        //   alert("Chatroom is full. Please try to join another time.")
-        // });
         socket.on("message", msg => {
           postMessage(msg);
         });
