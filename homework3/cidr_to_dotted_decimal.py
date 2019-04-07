@@ -14,7 +14,6 @@ def cidr_to_dotted_decimal(cidr):
         new_dd += str(int(new_bits[b: b + 8], 2)) + ('.' if b < 24 else '')
     return new_dd
 
-    
 def dotted_decimal_to_bits(dd):
     chunks = dd.split('.')
     bits = ''
