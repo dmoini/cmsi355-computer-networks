@@ -1,32 +1,36 @@
 6.20) If the maximum frequency audible to a human ear is 20,000 Hz, at what rate must the analog signal from a microphone be sampled when converting it to digital?  
-- TODO
+- 2 * *f<sub>max</sub>* = 2 * 20,000 Hz = 40,000 Hz
 
 7.2) What are the three energy types used when classifying physical media according to energy used?
-- TODO
+- Electrical, light, and electromagnetic.
 
 7.8) Explain why light does not leave an optical fiber when the fiber is bent into an arc.
-- TODO
+- Since an arced fiber cable has a critical angle greater than 90°, light within the cable reflects as if the boundaries were a mirror. This keeps the light within the cable rather than allowing it to pass through the cable.
 
 7.23) If a system has an average power level of 100, an average noise level of 33.33, and a bandwidth of 100 MHz, what is the effective limit on channel capacity?
-- TODO
+- B * log<sub>2</sub>(1 + S/N) = 100 * 10<sup>6</sup> * log<sub>2</sub>(1 + (100 / 33.33)) = 10<sup>8</sup> * 2.00010819807069 = 200,010,819.81 bits/sec <!-- TODO: check on Chegg -->
 
 13.8) What are the four basic LAN topologies?
-- TODO
+- Bus: a single cable to which computers attach.
+- Ring: arranges computers to be connected in a closed loop.
+- Star: all computers attach to a central point.
+- Mesh: provides a direct connection between each pair of computers.
 
 13.11) Given an IEEE MAC address, how can one tell if the address refers to unicast?
-- TODO
+- In a 48-bit IEEE MAC address, the value of the 8th bit determines whether the address refers to unicast (0) or multicast (1).
 
 18.12) What are the two basic approaches used to perform a distributed route computation, and how does each work?
-- TODO
+- Link State Routing: each packet switch broadcasts status messages to all switches in the network. Each switch collects incoming status messages and uses them to build a graph of the network. Each switch then uses a modified version of Dijkstra's algorithm to build a forwarding table, and chooses itself as the source.
+- Distance-vector routing (DVR): each packet switch sends DVR messages, which contain distances to other switches, to its neighbors. These DVR messages are used to update the receiving switch's forwarding table.
 
 21.4) Write a computer program that accepts a dotted decimal address as input and displays a string of 32 bits.
-- TODO
+- View [dotted-decimal-to-32-bits.py](dotted-decimal-to-32-bits.py)
 
 21.5) Write a computer program that reads an IP address in dotted decimal form and determines whether the address is a multicast address.
-- TODO
+- View [is-multicast-address.py](is-multicast-address.py)
 
 21.6) Write a computer program that translates between CIDR slash notation and an equivalent dotted decimal value.
-- TODO
+- View [cidr_to_dotted_decimal.py](cidr_to_dotted_decimal.py)
 
 21.7) If an ISP assigned you a / 28 address block, how many computers could you assign an address?
 - TODO
