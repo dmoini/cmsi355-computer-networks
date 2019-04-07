@@ -1,16 +1,26 @@
+"""
+cidr in form of ddd.ddd.ddd.ddd / m 
+    ddd is the decimal value for an octet of the address
+    m is the number of one bits in the mask.
+"""
 def cidr_to_dotted_decimal(cidr):
-    cidr_int = int(cidr[1:])
-    dd = ''
-    for c in range(4):
-        if cidr_int >= 8:
-            dd += '255'
-            cidr_int -= 8
-        elif cidr_int > 0:
-            bit_chunk = '1' * cidr_int + '0' * (8 - cidr_int)
-            dd += str(int(bit_chunk, 2))
-            cidr_int = 0
-        else:
-            dd += '0'
-        if c < 3:
-            dd += '.'
-    return dd
+    slash_index = cidr.find('/')
+    old_dd = cidr[:slash_index].strip()
+    mask = int(cidr[slash_index + 1:])
+    old_bits = dotted_decimal_to_bits(old_dd)
+    new_bits = old_bits[:mask] + '0' * (32 - mask)
+    new_dd = ''
+    for b in range(0, 32, 8):
+        new_dd += str(int(new_bits[b: b + 8], 2)) + ('.' if b < 24 else '')
+    return new_dd
+
+    
+def dotted_decimal_to_bits(dd):
+    chunks = dd.split('.')
+    bits = ''
+    for c in chunks:
+        octet = bin(int(c))[2:]
+        if len(octet) < 8:
+            octet = '0' * (8 - len(octet)) + octet
+        bits += octet
+    return bits
