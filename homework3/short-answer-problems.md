@@ -24,10 +24,10 @@
 - Distance-vector routing (DVR): each packet switch sends DVR messages, which contain distances to other switches, to its neighbors. These DVR messages are used to update the receiving switch's forwarding table.
 
 21.4) Write a computer program that accepts a dotted decimal address as input and displays a string of 32 bits.
-- View [dotted-decimal-to-32-bits.py](dotted-decimal-to-32-bits.py)
+- View [dotted_decimal_to_thirty_two_bits.py](dotted_decimal_to_thirty_two_bits.py)
 
 21.5) Write a computer program that reads an IP address in dotted decimal form and determines whether the address is a multicast address.
-- View [is-multicast-address.py](is-multicast-address.py)
+- View [is_multicast_address.py](is_multicast_address.py)
 
 21.6) Write a computer program that translates between CIDR slash notation and an equivalent dotted decimal value.
 - View [cidr_to_dotted_decimal.py](cidr_to_dotted_decimal.py)

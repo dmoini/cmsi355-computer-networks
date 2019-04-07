@@ -1,4 +1,4 @@
-def dotted_decimal_to_32_bit(dd):
+def dotted_decimal_to_thirty_two_bit(dd):
     bit_chunks = dd.split('.')
     for i, b in enumerate(bit_chunks):
         bit = bin(int(b))[2:]
