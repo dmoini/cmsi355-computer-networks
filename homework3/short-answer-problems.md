@@ -1,5 +1,5 @@
 6.20) If the maximum frequency audible to a human ear is 20,000 Hz, at what rate must the analog signal from a microphone be sampled when converting it to digital?  
-- 2 * *f<sub>max</sub>* = 2 * 20,000 Hz = 40,000 Hz
+- $2 * f_{max} = 2 * 20,000Hz = 40,000Hz$
 
 7.2) What are the three energy types used when classifying physical media according to energy used?
 - Electrical, light, and electromagnetic.
@@ -8,7 +8,8 @@
 - Since an arced fiber cable has a critical angle greater than 90°, light within the cable reflects as if the boundaries were a mirror. This keeps the light within the cable rather than allowing it to pass through the cable.
 
 7.23) If a system has an average power level of 100, an average noise level of 33.33, and a bandwidth of 100 MHz, what is the effective limit on channel capacity?
-- B * log<sub>2</sub>(1 + S/N) = 100 * 10<sup>6</sup> * log<sub>2</sub>(1 + (100 / 33.33)) = 10<sup>8</sup> * 2.00010819807069 = 200,010,819.81 bits/sec <!-- TODO: check on Chegg -->
+- $B * log_{2}(1 + \frac{S}{N}) = 100 * 10^{6} * log_{2}(1 + \frac{100}{33.33}) = 10^{8} * 2.00010819807 = 200,010,819.81$
+<!-- TODO: check on Chegg -->
 
 13.8) What are the four basic LAN topologies?
 - Bus: a single cable to which computers attach.
@@ -33,24 +34,31 @@
 - View [cidr_to_dotted_decimal.py](cidr_to_dotted_decimal.py)
 
 21.7) If an ISP assigned you a / 28 address block, how many computers could you assign an address?
-- TODO
+- $2^{32-28} - 2 = 2^{4} - 2 = 16 - 2 = 14$
 
 21.8) If an ISP offers a / 17 address block for N dollars per month and a / 16 address block for 1.5 N dollars per month, which has the cheapest cost per computer?
-- TODO
+- / 17 address cost per computer:
+  - \# of computers (C) = $2^{32-17} - 2 = 2^{15} - 2$
+  - Total cost per month = $\frac{N}{C} = \frac{N}{2^{15} - 2}$
+- / 16 address cost per computer:
+  - \# of computers (C) = $2^{32-16} - 2 = 2^{16} - 2$
+  - Total cost per month = $\frac{1.5N}{C} = \frac{1.5N}{2^{16} - 2} ≈ \frac{0.75N}{2^{15} - 2}$
+- / 16 address has cheaper cost per computer
 
 21.9) Is the CIDR prefix 1.2.3.4 / 29 valid? Why or why not?
-- TODO
+- It is valid because networks are in groups of 8. The address block in this case would be 1.2.3.0 / 29, and 1.2.3.4 / 29 is within the group of 8.
 
 21.10) Suppose you are an ISP with a / 24 address block. Explain whether you accommodate a request from a customer who needs addresses for 255 computers. (Hint: consider the special addresses.)
-- TODO
+- An ISP with a / 24 address block could accommodate this many computers: $2^{32 - 24} - 2 = 2^8 - 2 = 256 - 2 = 254$. Even though it could accommodate 256 combination of bits, the suffix being all 0's is reserved for the network and the suffix being all 1's is reserved for the directed broadcast.
 
-21.11) Suppose you are an ISP that owns a / 22 address block. Show the CIDR allocation you would use to allocate address blocks to four customers who need addresses for 60 com- puters each.
+21.11) Suppose you are an ISP that owns a / 22 address block. Show the CIDR allocation you would use to allocate address blocks to four customers who need addresses for 60 computers each.
 - TODO
+- / 26
 
 21.12) Suppose you are an ISP that owns a / 22 address block. Can you accommodate requests from six customers who need addresses for 9, 15, 20, 41, 128, and 260 computers, respectively? If so, how? If not, explain why.
 - TODO
 
-21.13) Write a computer program that reads an address in CIDR notation and prints the result- ing address and mask in binary.
+21.13) Write a computer program that reads an address in CIDR notation and prints the resulting address and mask in binary.
 - TODO
 
 23.2) What term is used to describe the mapping between a protocol address and a hardware address?
@@ -66,4 +74,4 @@
 - TODO
 
 24.9) Write a computer program that reads a 128-bit binary number and prints the number in colon hex notation.
-- TODO
+- View [binary_to_colon_hex.py](binary_to_colon_hex.py)
