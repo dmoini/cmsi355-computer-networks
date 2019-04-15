@@ -1,3 +1,4 @@
+import re
 BIT_LENGTH = 32
 BIT_CHUNK = 8
 
@@ -7,19 +8,15 @@ cidr in form of ddd.ddd.ddd.ddd/m
     m is the number of one bits in the mask.
 """
 def cidr_to_dotted_decimal(cidr):
-    # TODO: check if valid with regex
+    valid_cidr = re.compile(r'^(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-5][0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-5][0-5])\/([0-9]|[1-2][0-9]|3[0-2])$')
+    if not valid_cidr.match(cidr):
+        return 'Please enter a valid CIDR address'
     old_dd, mask = cidr.split('/')
-    # slash_index = cidr.find('/')
-    # old_dd = cidr[:slash_index].strip()
     mask = int(mask)
-    old_bits = dotted_decimal_to_bits(old_dd)
-    new_bits = old_bits[:mask] + '0' * (BIT_LENGTH - mask)
-    new_dd = ''
-    for b in range(0, BIT_LENGTH, BIT_CHUNK):
-        new_dd += str(int(new_bits[b: b + 8], 2)) + ('.' if b < BIT_LENGTH - BIT_CHUNK else '')
-    return new_dd
+    binary = dotted_decimal_to_binary(old_dd, mask)
+    return binary_to_dotted_decimal(binary)
 
-def dotted_decimal_to_bits(dd):
+def dotted_decimal_to_binary(dd, mask):
     chunks = dd.split('.')
     bits = ''
     for c in chunks:
@@ -27,7 +24,11 @@ def dotted_decimal_to_bits(dd):
         if len(octet) < BIT_CHUNK:
             octet = '0' * (BIT_CHUNK - len(octet)) + octet
         bits += octet
-    return bits
+    return bits[:mask] + '0' * (BIT_LENGTH - mask)
 
-cidr = '128.211.0.0/16'
-print(cidr_to_dotted_decimal(cidr))
+def binary_to_dotted_decimal(b):
+    dd = [0 for x in range(4)]
+    for i in range(0, BIT_LENGTH, BIT_CHUNK):
+        # chunk = b[i:i + 8]
+        dd[i // 8] = str(int(b[i:i + 8], 2))
+    return '.'.join(dd)

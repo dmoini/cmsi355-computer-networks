@@ -1,4 +1,7 @@
+import re
+
 BIT_LENGTH = 32
+CHUNK_LENGTH = 8
 
 """
 cidr in form of ddd.ddd.ddd.ddd/m 
@@ -6,25 +9,21 @@ cidr in form of ddd.ddd.ddd.ddd/m
     m is the number of one bits in the mask.
 """
 def cidr_to_binary(cidr):
-    # TODO: check if valid with regex
+    valid_cidr = re.compile(r'^(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-5][0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-5][0-5])\/([0-9]|[1-2][0-9]|3[0-2])$')
+    if not valid_cidr.match(cidr):
+        return "Please enter a valid CIDR address"
     address, mask = cidr.split('/')
-    # slash_index = cidr.find('/')
-    # ip = cidr[:slash_index].strip()
-    # mask = cidr[slash_index + 2:].strip()
-    
-    # print(address, mask)
-    # print(mask_to_binary(int(mask)))
-
     return (address_to_binary(address), mask_to_binary(int(mask)))
 
 def address_to_binary(address):
     binary_address = ''
     address_arr = address.split('.')
-    print(address_arr)
-    pass
+    for a in address_arr:
+        bits = bin(int(a))[2:]
+        if len(bits) < 8:
+            bits = '0' * (CHUNK_LENGTH - len(bits)) + bits
+        binary_address += bits
+    return binary_address
 
 def mask_to_binary(mask):
     return '1' * mask + '0' * (BIT_LENGTH - mask)
-
-cidr = '128.211.0.0/16'
-print(cidr_to_binary(cidr))
