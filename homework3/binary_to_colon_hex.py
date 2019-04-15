@@ -1,5 +1,6 @@
 # b is a 128=bit binary number
 def binary_to_colon_hex(b):
+    # TODO: check if valid with regex
     MAX_BITS = 128
     BITS_CHUNK = 16
     hex_chunks = ['' for i in range(8)]

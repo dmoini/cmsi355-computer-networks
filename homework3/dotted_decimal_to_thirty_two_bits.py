@@ -1,4 +1,5 @@
 def dotted_decimal_to_thirty_two_bit(dd):
+    # TODO: check if valid with regex
     bit_chunks = dd.split('.')
     for i, b in enumerate(bit_chunks):
         bit = bin(int(b))[2:]

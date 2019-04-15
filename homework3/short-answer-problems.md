@@ -59,10 +59,10 @@
 - TODO
 
 21.13) Write a computer program that reads an address in CIDR notation and prints the resulting address and mask in binary.
-- TODO
+- TODO View [cidr_to_binary.py](cidr_to_binary.py)
 
 23.2) What term is used to describe the mapping between a protocol address and a hardware address?
-- TODO
+- Address resolution
 
 23.5) How many octets does an ARP message occupy when used with IP and Ethernet addresses?
 - TODO
