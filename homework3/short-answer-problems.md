@@ -64,14 +64,25 @@
 23.2) What term is used to describe the mapping between a protocol address and a hardware address?
 - Address resolution
 
-23.5) How many octets does an ARP message occupy when used with IP and Ethernet addresses?
-- TODO
+23.5) How many octets does an ARP message occupy when used with IP and Ethernet addresses? <!--TODO: check answer-->
+- IP: 4
+- Ethernet: 6
 
-23.22) Many NAT devices choose the 10.0.0.0/8 address block from Figure 23.10 because it provides the most generality. Explain why.
-- TODO
+23.22) Many NAT devices choose the 10.0.0.0/8 address block from Figure 23.10 because it provides the most generality. Explain why. <!--TODO: check answer-->
+- From the given private addresses, 10.0.0.0/8 allows for the largest number of hosts. Since the mask is 8, this allows for 24 host bits, meaning up to $24^{2} - 2$ hosts, compared to the other options with masks of 12 or 16.
 
 24.3) List the major features of IPv6, and give a short description of each.
-- TODO
+- Address size: each IPv6 header is 128 bits.
+- Header format: the IPv6 header format has drastically changed from IPv4's header format. Changes include:
+  - IPv6 headers are twice as large as IPv4 headers
+  - Source address and destination address fields occupy 16 octets of space (4 times the space compared to IPv4)
+  - Includes the field *TRAFFIC CLASS* that specifies the traffic class for the datagram (low latency, low jitter, etc...).
+  - The *PAYLOAD LENGTH*, which corresponds to IPv4's datagram length field, specifies only the size of the carried data, not the header size.
+  - *HOP LIMIT* corresponds to IPv4's *TIME TO LIVE*.
+  - Each header includes a *NEXT HEADER* field, specifying the type of information that follows the current header.
+- Extension headers: IPv6 datagrams encode information into a variable number of separate headers rather than a fixed-length single header.
+- Support for real-time traffic: allows a sender and receiver to establish a high-quality path through the underlying network, meaning datagrams sent between the two avoid route changes and preserve such high-quality.
+- Extensible protocol: IPv6 does not specify all possible protocol features. Due to the addition of extension headers, datagrams can have additional information added to them, and new protocol features can be added when needed.
 
 24.9) Write a computer program that reads a 128-bit binary number and prints the number in colon hex notation.
 - View [binary_to_colon_hex.py](binary_to_colon_hex.py)
