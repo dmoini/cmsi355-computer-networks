@@ -1,9 +1,9 @@
 @import url(https://fonts.googleapis.com/css?family=Zombie:300);
 
 @font-face {
-    font-family: 'Zombie';
-    src: url('fonts/zombie/zombie-webfont.woff2') format('woff2'),
-         url('fonts/zombie/zombie-webfont.woff') format('woff');
+    font-family: "Zombie";
+    src: url("fonts/zombie/zombie-webfont.woff2") format("woff2"),
+         url("fonts/zombie/zombie-webfont.woff") format("woff");
     font-weight: normal;
     font-style: normal;
 }
