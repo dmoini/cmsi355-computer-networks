@@ -16,3 +16,10 @@ socket.addEventListener('message', (event) => {
     ctx.fillRect(...location, 10, 10);
   });
 });
+
+// TODO: update to current jQuery
+// When the server sends us the `welcome` message, hide the lobby for and show the game board.
+socket.on('welcome', () => {
+  $('#login').style.display = 'none';
+  $('#game').style.display = 'block';
+});

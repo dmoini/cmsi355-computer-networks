@@ -4,8 +4,25 @@
     <link rel="stylesheet" href="littlektah.css">
   </head>
   <body>
-    <h1>Little K'tah</h1>
-    <canvas width="500" height="500"></canvas>
+    <!-- Credit to https://codepen.io/colorlib/pen/rxddKy -->
+    <div id="login">
+      <div class="form">
+        <form class="login-form">
+          <h1>Little K'tah</h1>
+          <p>Please enter a username</p>
+          <p id="taken-username">Please enter a unique username</p>
+          <input type="text" placeholder="username"/>
+          <button>Begin playing Little K'tah</button>
+        </form>
+      </div>
+    </div>
+
+    <div id="game">
+      <h1>Little K'tah</h1>
+      <canvas width="500" height="500"></canvas>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>
     <script src="littlektah.js"></script>
   </body>
 </html>
