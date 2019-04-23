@@ -49,7 +49,7 @@
 - It is valid because networks are in groups of 8. The address block in this case would be 1.2.3.0 / 29, and 1.2.3.4 / 29 is within the group of 8.
 
 21.10) Suppose you are an ISP with a / 24 address block. Explain whether you accommodate a request from a customer who needs addresses for 255 computers. (Hint: consider the special addresses.)
-- An ISP with a / 24 address block could accommodate this many computers: <img src="https://latex.codecogs.com/gif.latex?2^{32&space;-&space;24}-2=2^8-2=256-2=254" title="2^{32 - 24}-2=2^8-2=256-2=254" />. Even though it could accommodate 256 combination of bits, the suffix being all 0's is reserved for the network and the suffix being all 1's is reserved for the directed broadcast.
+- An ISP with a / 24 address block could accommodate this many computers: <img src="https://latex.codecogs.com/gif.latex?2^{32&space;-&space;24}-2=2^8-2=256-2=254" title="2^{32 - 24}-2=2^8-2=256-2=254" />. Even though it could accommodate 256 combination of bits, the suffix being all 0's is reserved for the network and the suffix being all 1's is reserved for the directed broadcast. Therefore, no.
 
 21.11) Suppose you are an ISP that owns a / 22 address block. Show the CIDR allocation you would use to allocate address blocks to four customers who need addresses for 60 computers each.
 - /22 means that we have 2^10 computers. We can fit 60 computers in a /26 because a /26 allows 6 bits for each allocation, meaning each customer would have 2^6 - 2 = 62 available addresses for computers. With this information, a possible CIDR allocation could be ddd.ddd.ddd.0/26, ddd.ddd.ddd.64/26, ddd.ddd.ddd.128/26, ddd.ddd.ddd.192/26, where ddd.ddd.ddd is the same for all four customers.
