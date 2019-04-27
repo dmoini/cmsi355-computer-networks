@@ -7,7 +7,6 @@
 7.8) Explain why light does not leave an optical fiber when the fiber is bent into an arc.
 - Since an arced fiber cable has a critical angle greater than 90°, light within the cable reflects as if the boundaries were a mirror. This keeps the light within the cable rather than allowing it to pass through the cable.
 
-<!-- TODO: check with Toal -->
 7.23) If a system has an average power level of 100, an average noise level of 33.33, and a bandwidth of 100 MHz, what is the effective limit on channel capacity?
 - <img src="https://latex.codecogs.com/gif.latex?B*log_{2}(1&plus;\frac{S}{N})=100*10^{6}*log_{2}(1&plus;\frac{100}{33.33})=10^{8}*2.00010819807=200,010,819.81" title="B*log_{2}(1+\frac{S}{N})=100*10^{6}*log_{2}(1+\frac{100}{33.33})=10^{8}*2.00010819807=200,010,819.81" />
 
@@ -55,10 +54,17 @@
 - /22 means that we have 2^10 computers. We can fit 60 computers in a /26 because a /26 allows 6 bits for each allocation, meaning each customer would have 2^6 - 2 = 62 available addresses for computers. With this information, a possible CIDR allocation could be ddd.ddd.ddd.0/26, ddd.ddd.ddd.64/26, ddd.ddd.ddd.128/26, ddd.ddd.ddd.192/26, where ddd.ddd.ddd is the same for all four customers.
 
 <!-- TODO: ASK TOAL -->
+<!-- TODO: @ian please double check and make sure this look correct. Also, add example addresses to show correctness of answers -->
 21.12) Suppose you are an ISP that owns a / 22 address block. Can you accommodate requests from six customers who need addresses for 9, 15, 20, 41, 128, and 260 computers, respectively? If so, how? If not, explain why.
-- For 9 computers, we only need **4 bits** to accomodate.
-    - One allocation would be 
-- For 15 computers, we only need **5 bits** to accomodate.
+- For 9 computers, we need **4 bits** to accommodate.
+    - One allocation would be 123.45.0.0/22. This covers the range 123.45.0.1-14.
+- For 15 computers, we need **4 bits** to accommodate.
+  - One allocation would be 123.45.0.16/22. This covers the range 123.45.0.17-32.
+- For 20 computers, we need **5 bits** to accommodate.
+  - One allocation would be 123.45.0.33/22. This covers the range 123.45.34-66
+- For 41 computers, we need **6 bits** to accommodate.
+- For 128 computers, we need **8 bits** to accommodate.
+- For 260 computers, we need **8 bits** to accommodate first 254 hosts and then **3 bits** to accommodate remaining 6 hosts.
 
 21.13) Write a computer program that reads an address in CIDR notation and prints the resulting address and mask in binary.
 - View [cidr_to_binary.py](cidr_to_binary.py)
