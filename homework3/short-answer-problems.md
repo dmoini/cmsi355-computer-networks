@@ -52,18 +52,13 @@
 21.11) Suppose you are an ISP that owns a / 22 address block. Show the CIDR allocation you would use to allocate address blocks to four customers who need addresses for 60 computers each.
 - /22 means that we have 2^10 computers. We can fit 60 computers in a /26 because a /26 allows 6 bits for each allocation, meaning each customer would have 2^6 - 2 = 62 available addresses for computers. With this information, a possible CIDR allocation could be ddd.ddd.ddd.0/26, ddd.ddd.ddd.64/26, ddd.ddd.ddd.128/26, ddd.ddd.ddd.192/26, where ddd.ddd.ddd is the same for all four customers.
 
-<!-- TODO: ASK TOAL -->
-<!-- TODO: @ian please double check and make sure this look correct. Also, add example addresses to show correctness of answers -->
 21.12) Suppose you are an ISP that owns a / 22 address block. Can you accommodate requests from six customers who need addresses for 9, 15, 20, 41, 128, and 260 computers, respectively? If so, how? If not, explain why.
-- For 9 computers, we need **4 bits** to accommodate.
-    - One allocation would be 123.45.0.0/22. This covers the range 123.45.0.1-14.
-- For 15 computers, we need **4 bits** to accommodate.
-  - One allocation would be 123.45.0.16/22. This covers the range 123.45.0.17-32.
-- For 20 computers, we need **5 bits** to accommodate.
-  - One allocation would be 123.45.0.33/22. This covers the range 123.45.34-66
-- For 41 computers, we need **6 bits** to accommodate.
-- For 128 computers, we need **8 bits** to accommodate.
-- For 260 computers, we need **8 bits** to accommodate first 254 hosts and then **3 bits** to accommodate remaining 6 hosts.
+- For 9 computers, we need **4 bits** to accommodate. This covers the range 123.45.0.1-14, which can hold 9 computers.
+- For 15 computers, we need **5 bits** to accommodate. This covers the range 123.45.0.1-30, which can hold 15 computers.
+- For 20 computers, we need **5 bits** to accommodate. This covers the range 123.45.0.1-30, which can hold 20 computers.
+- For 41 computers, we need **6 bits** to accommodate. This covers the range 123.45.0.1-62, which can hold 41 computers.
+- For 128 computers, we need **8 bits** to accommodate. This covers the range 123.45.0.1-254, which can hold 128 computers.
+- For 260 computers, we need **8 bits** to accommodate first 254 hosts and an additional **3 bits** to accommodate remaining 6 hosts. This covers the range 123.45.0.1-254 and 123.45.1.1-6.
 
 21.13) Write a computer program that reads an address in CIDR notation and prints the resulting address and mask in binary.
 - View [cidr_to_binary.py](cidr_to_binary.py)
