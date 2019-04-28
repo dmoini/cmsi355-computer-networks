@@ -45,8 +45,7 @@
 - / 16 address has cheaper cost per computer
 
 21.9) Is the CIDR prefix 1.2.3.4 / 29 valid? Why or why not?
-- It is valid because networks are in groups of 8. The address block in this case would be 1.2.3.0 / 29, and 1.2.3.4 / 29 is within the group of 8.
-
+- It is not valid because this prefix zeroes out the first 29 bits, but the 4 at the end means the 29th MSB is not zeroed out. The correct CIDR prefix for this would be 1.2.3.0 / 29.
 21.10) Suppose you are an ISP with a / 24 address block. Explain whether you accommodate a request from a customer who needs addresses for 255 computers. (Hint: consider the special addresses.)
 - An ISP with a / 24 address block could accommodate this many computers: <img src="https://latex.codecogs.com/gif.latex?2^{32&space;-&space;24}-2=2^8-2=256-2=254" title="2^{32 - 24}-2=2^8-2=256-2=254" />. Even though it could accommodate 256 combination of bits, the suffix being all 0's is reserved for the network and the suffix being all 1's is reserved for the directed broadcast. Therefore, no.
 
