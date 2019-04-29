@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /*
  * Server side game module. Maintains the game state and processes all the messages from clients.
  *
@@ -29,7 +30,7 @@ function getRandomColor() {
   return color;
 }
 
-exports.addPlayer = name => {
+exports.addPlayer = (name) => {
   if (
     name.length === 0 ||
     name.length > MAX_PLAYER_NAME_LENGTH ||
@@ -42,6 +43,11 @@ exports.addPlayer = name => {
   database.scores[name] = 0;
   return true;
 };
+
+// TODO: delete when done. Only here for testing
+exports.getUsedNames = () => {
+  return database.usednames;
+}
 
 function placeCoins() {
   permutation(WIDTH * HEIGHT)
@@ -84,6 +90,7 @@ exports.move = (direction, name) => {
       .split(",");
     console.log("NewXY:", [newX, newY]);
     database[playerKey] = `${newX},${newY}`;
+    console.log("=========================================");
   }
 };
 

@@ -44,7 +44,7 @@
     font-size: 14px;
 }
 
-.form #username-button {
+.form #join {
     font-family: "Zombie", sans-serif;
     text-transform: uppercase;
     outline: 0;
@@ -101,17 +101,17 @@ body {
 /***** GAME *****/
 
 body {
-  margin: 20px;
+    margin: 20px;
 }
 
 canvas {
-  background-color: #dfd;
+    background-color: #dfd;
 }
 
 #game {
-  display: none;
-  width: 100%;
-text-align:center;
+    display: none;
+    width: 100%;
+    text-align:center;
 }
 
 canvas {

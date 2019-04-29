@@ -1,3 +1,6 @@
+/* eslint-disable no-console */
+/* eslint-disable no-undef */
+
 // const path = require("path");
 const express = require("express");
 const app = express();
@@ -15,12 +18,14 @@ app.get("/", (req, res) => {
 });
 
 io.on("connection", socket => {
-  const nameListener = name => {
+  const nameListener = (name) => {
     const trimmedName = name.trim();
     if (game.addPlayer(trimmedName)) {
+      console.log("NAMES:", game.getUsedNames());
       io.to(socket.id).emit("welcome");
       io.emit("state", game.state());
       socket.removeListener("name", nameListener);
+      
       socket.on("move", mousePosition => {
         console.log("Mouse position", mousePosition);
         game.move(mousePosition, trimmedName);

@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 (() => {
   const socket = io(); // eslint-disable-line no-undef
   const canvas = document.querySelector("canvas");
@@ -7,11 +8,15 @@
   ctx.textAlign = "center";
   ctx.textBaseline = "middle";
 
+  const usernameInstructions = $("#username-instructions");
+  const usernameFormInput = $("#username-input")
+  const usernameFormButton = $("#join");
+
   function clearCanvas() {
     ctx.clearRect(0, 0, 640, 640);
   }
 
-  function getRandomColor() {
+  const getRandomColor = () => {
     const letters = "0123456789ABCDEF";
     let color = "#";
     for (let i = 0; i < 6; i++) {
@@ -20,7 +25,7 @@
     return color;
   }
 
-  function fillCell(row, column, text, textColor, backgroundColor) {
+  const fillCell = (row, column, text, textColor, backgroundColor) => {
     if (backgroundColor) {
       ctx.fillStyle = backgroundColor;
       ctx.beginPath();
@@ -30,13 +35,13 @@
     }
   }
 
-  function drawPlayers(gameState) {
+  const drawPlayers = (gameState) => {
     gameState.positions.forEach(([name, position]) => {
-      fillCell(...position.split(","), name[0].toUpperCase(), "white", "#60c");
+      fillCell(...position.split(","), name[0].toUpperCase(), "white", "#00FFFF");
     });
   }
 
-  function drawCoins(gameState) {
+  const drawCoins = (gameState) => {
     Object.entries(gameState.coins).forEach(([position, coinValue]) => {
       fillCell(...position.split(","), coinValue, "black");
     });
@@ -56,7 +61,7 @@
   //     });
   //   }
 
-  function renderBoard(gameState) {
+  const renderBoard = (gameState) => {
     clearCanvas();
     // drawCoins(gameState);
     drawPlayers(gameState);
@@ -64,8 +69,8 @@
   }
 
   // When the join button is clicked, send the name to the server in a `name` message.
-  document.querySelector("input#join").addEventListener("click", () => {
-    socket.emit("name", document.querySelector("input#username-input").value);
+  usernameFormButton.on("click", () => {
+    socket.emit("name", usernameFormInput.val().toUpperCase());
   });
 
   // When an arrow key is pressed, send a `move` message with a single-character argument
@@ -80,18 +85,33 @@
       socket.emit("move", JSON.stringify([x, y]));
     }
     e.preventDefault();
-  }),
-    // When the server tells us the name is bad, render an error message.
-    socket.on("badname", name => {
-      document.querySelector(
-        ".error"
-      ).innerHTML = `Name ${name} too short, too long, or taken`;
-    });
+  });
+  
+
+  usernameFormInput.keypress((e) => {
+    let key = e.which;
+    if(key === 13) {  // the enter key code
+       usernameFormButton.click();
+       return false;  
+     }
+   });
+
+  // When the server tells us the name is bad, render an error message.
+  // let fontSize = 20;
+  socket.on("badname", (name) => {
+    console.log(`NAME ${name} taken`)
+    // document.querySelector(
+    //   ".error"
+    // ).innerHTML = `Name ${name} too short, too long, or taken`;
+    usernameInstructions.text(`Name ${name} too short, too long, or taken`);
+    usernameInstructions.addClass("taken-username");
+    // usernameInstructions.css("font-size", fontSize + "px");
+  });
 
   // When the server sends us the `welcome` message, hide the lobby for and show the game board.
   socket.on("welcome", () => {
-    document.querySelector("div#login").style.display = "none";
-    document.querySelector("div#game").style.display = "block";
+    $("#login").hide();
+    $("#game").show();
   });
 
   // When the server sends us a `state` message, render the game state it sends us.
