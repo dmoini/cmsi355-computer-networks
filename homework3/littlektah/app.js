@@ -19,9 +19,14 @@ app.get("/", (req, res) => {
 
 // NOTE: creates 5 zombie players
 // TODO: use addZombie function
-for (let i = 1; i <= 5; i += 1) {
-  let name = "ZOMBIE" + i;
-  game.addPlayer(name);
+// for (let i = 1; i <= 5; i += 1) {
+//   let name = "ZOMBIE" + i;
+//   game.addPlayer(name);
+// }
+const initializeZombies = () => {
+  for (let i = 1; i <= 5; i++) {
+    game.addZombie("zombie" + i);
+  }
 }
 
 // NOTE:  io = server
@@ -46,3 +51,5 @@ io.on("connection", socket => {
   };
   socket.on("name", nameListener);
 });
+
+initializeZombies();

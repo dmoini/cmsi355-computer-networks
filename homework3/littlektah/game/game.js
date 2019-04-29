@@ -18,7 +18,7 @@ const NUM_COINS = 100;
 const database = {
   scores: {},
   usednames: new Set(),
-  coins: {},
+  // coins: {},
 };
 
 function getRandomColor() {
@@ -41,12 +41,14 @@ exports.addPlayer = (name) => {
   database.usednames.add(name);
   database[`player:${name}`] = randomPoint(WIDTH, HEIGHT).toString();
   database.scores[name] = 0;
+  console.log("addPlayer:", database);
   return true;
 };
 
 // TODO
-exports.addZombie = () => {
-
+exports.addZombie = (name) => {
+  database[`zombie:${name}`] = randomPoint(WIDTH, HEIGHT).toString();
+  console.log("addZombie:", database)
 }
 
 // TODO: delete when done. Only here for testing
@@ -54,17 +56,17 @@ exports.getUsedNames = () => {
   return database.usednames;
 }
 
-function placeCoins() {
-  permutation(WIDTH * HEIGHT)
-    .slice(0, NUM_COINS)
-    .forEach((position, i) => {
-      const coinValue = i < 50 ? 1 : i < 75 ? 2 : i < 95 ? 5 : 10;
-      const index = `${Math.floor(position / WIDTH)},${Math.floor(
-        position % WIDTH
-      )}`;
-      database.coins[index] = coinValue;
-    });
-}
+// function placeCoins() {
+//   permutation(WIDTH * HEIGHT)
+//     .slice(0, NUM_COINS)
+//     .forEach((position, i) => {
+//       const coinValue = i < 50 ? 1 : i < 75 ? 2 : i < 95 ? 5 : 10;
+//       const index = `${Math.floor(position / WIDTH)},${Math.floor(
+//         position % WIDTH
+//       )}`;
+//       database.coins[index] = coinValue;
+//     });
+// }
 
 // Return only the parts of the database relevant to the client. The client only cares about
 // the positions of each player, the scores, and the positions (and values) of each coin.
@@ -73,9 +75,9 @@ function placeCoins() {
 exports.state = () => {
   // TODO: add key.startswith zombie: ???
   const positions = Object.entries(database)
-    .filter(([key]) => key.startsWith("player:"))
+    .filter(([key]) => (key.startsWith("player:") || key.startsWith("zombie:")))
     .map(([key, value]) => [key.substring(7), value]);
-  console.log(positions);
+  console.log(`POSITIONS: ${JSON.stringify(positions)}`);
   const scores = Object.entries(database.scores);
   scores.sort(([, v1], [, v2]) => v2 - v1);
   return {
@@ -101,4 +103,4 @@ exports.move = (direction, name) => {
   }
 };
 
-placeCoins();
+// placeCoins();

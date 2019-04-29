@@ -37,11 +37,17 @@
     }
   }
 
-  const drawPlayers = (gameState) => {
+  const drawPlayersAndZombies = (gameState) => {
     gameState.positions.forEach(([name, position]) => {
-      fillCell(...position.split(","), name[0].toUpperCase(), "white", "#00FFFF");
+      console.log("NAME:", name);
+      let color = name.startsWith("zombie") ? "#000000" : "#00FFFF";
+      fillCell(...position.split(","), name[0].toUpperCase(), "white", color);
     });
   }
+
+  // const drawZombies = (gameState) => {
+
+  // }
 
   const drawCoins = (gameState) => {
     Object.entries(gameState.coins).forEach(([position, coinValue]) => {
@@ -66,7 +72,7 @@
   const renderBoard = (gameState) => {
     clearCanvas();
     // drawCoins(gameState);
-    drawPlayers(gameState);
+    drawPlayersAndZombies(gameState);
     // drawScores(gameState);
   }
 
