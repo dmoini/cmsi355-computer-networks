@@ -1,7 +1,7 @@
 <html>
   <head>
-    <meta charset="utf-8">
-    <link rel="stylesheet" href="littlektah.css">
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="littlektah.css" />
   </head>
   <body>
     <div id="login">
@@ -9,19 +9,23 @@
         <form class="login-form">
           <h1>Little K'tah</h1>
           <p id="username-instructions">Please enter a username</p>
-          <input id="username-input" type="text" placeholder="username"/>
-          <input id="username-button" type="button" value="BEGIN PLAYING LITTLE K'TAH"/>
+          <input id="username-input" type="text" placeholder="username" />
+          <input id="join" type="button" value="BEGIN PLAYING LITTLE K'TAH" />
         </form>
       </div>
     </div>
 
     <div id="game">
       <h1>Little K'tah</h1>
-      <canvas width="500" height="500"></canvas>
+      <canvas width="640" height="640"></canvas>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>
-    <script src="https://code.jquery.com/jquery-3.4.0.min.js" integrity="sha256-BJeo0qm959uMBGb65z40ejJYGSgR7REI4+CW1fNKwOg=" crossorigin="anonymous"></script>
+    <script
+      src="https://code.jquery.com/jquery-3.4.0.min.js"
+      integrity="sha256-BJeo0qm959uMBGb65z40ejJYGSgR7REI4+CW1fNKwOg="
+      crossorigin="anonymous"
+    ></script>
     <script src="littlektah.js"></script>
   </body>
 </html>
