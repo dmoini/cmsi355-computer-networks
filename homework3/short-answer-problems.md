@@ -24,13 +24,13 @@
 - Distance-vector routing (DVR): each packet switch sends DVR messages, which contain distances to other switches, to its neighbors. These DVR messages are used to update the receiving switch's forwarding table.
 
 21.4) Write a computer program that accepts a dotted decimal address as input and displays a string of 32 bits.
-- View [dotted_decimal_to_thirty_two_bits.py](dotted_decimal_to_thirty_two_bits.py)
+- View [dotted_decimal_quad_to_binary()](iputils.py)
 
 21.5) Write a computer program that reads an IP address in dotted decimal form and determines whether the address is a multicast address.
-- View [is_multicast_address.py](is_multicast_address.py)
+- View [is_dotted_quad_multicast()](iputils.py)
 
 21.6) Write a computer program that translates between CIDR slash notation and an equivalent dotted decimal value.
-- View [cidr_to_dotted_decimal.py](cidr_to_dotted_decimal.py)
+- View [cidr_to_dotted_quad() and dotted_quad_to_cidr()](iputils.py)
 
 21.7) If an ISP assigned you a / 28 address block, how many computers could you assign an address?
 - <img src="https://latex.codecogs.com/gif.latex?2^{32-28}-2=2^{4}-2=16-2=14" title="2^{32-28}-2=2^{4}-2=16-2=14" />
@@ -61,7 +61,7 @@
 - For 260 computers, we need **8 bits** to accommodate first 254 hosts and an additional **3 bits** to accommodate remaining 6 hosts. This covers the range 123.45.0.1-254 and 123.45.1.1-6.
 
 21.13) Write a computer program that reads an address in CIDR notation and prints the resulting address and mask in binary.
-- View [cidr_to_binary.py](cidr_to_binary.py)
+- View [cidr_to_address_and_mask_in_binary()](iputils.py)
 
 23.2) What term is used to describe the mapping between a protocol address and a hardware address?
 - Address Resolution Protocol (ARP)
@@ -87,4 +87,4 @@
 - Extensible protocol: IPv6 does not specify all possible protocol features. Due to the addition of extension headers, datagrams can have additional information added to them, and new protocol features can be added when needed.
 
 24.9) Write a computer program that reads a 128-bit binary number and prints the number in colon hex notation.
-- View [binary_to_colon_hex.py](binary_to_colon_hex.py)
+- View [binary_to_colon_hex())](iputils.py)
