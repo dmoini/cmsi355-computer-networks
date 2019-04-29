@@ -10,8 +10,8 @@
 
 const { randomPoint, permutation } = require("./gameutils");
 
-const WIDTH = 64;
-const HEIGHT = 64;
+const WIDTH = 640;
+const HEIGHT = 640;
 const MAX_PLAYER_NAME_LENGTH = 32;
 const NUM_COINS = 100;
 
@@ -44,6 +44,11 @@ exports.addPlayer = (name) => {
   return true;
 };
 
+// TODO
+exports.addZombie = () => {
+
+}
+
 // TODO: delete when done. Only here for testing
 exports.getUsedNames = () => {
   return database.usednames;
@@ -66,9 +71,11 @@ function placeCoins() {
 // Note that we return the scores in sorted order, so the client just has to iteratively
 // walk through an array of name-score pairs and render them.
 exports.state = () => {
+  // TODO: add key.startswith zombie: ???
   const positions = Object.entries(database)
     .filter(([key]) => key.startsWith("player:"))
     .map(([key, value]) => [key.substring(7), value]);
+  console.log(positions);
   const scores = Object.entries(database.scores);
   scores.sort(([, v1], [, v2]) => v2 - v1);
   return {

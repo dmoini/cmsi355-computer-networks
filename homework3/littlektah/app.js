@@ -17,7 +17,8 @@ app.get("/", (req, res) => {
   res.sendFile(__dirname + "/public/littlektah.html");
 });
 
-// TODO: create 5 zombies
+// NOTE: creates 5 zombie players
+// TODO: use addZombie function
 for (let i = 1; i <= 5; i += 1) {
   let name = "ZOMBIE" + i;
   game.addPlayer(name);
