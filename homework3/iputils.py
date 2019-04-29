@@ -1,6 +1,6 @@
 import re
 
-MAX_BITS = 128
+ONE_HUNDRED_TWENTY_EIGHT_BITS = 128
 THIRTY_TWO_BITS = 32
 SIXTEEN_BITS = 16
 EIGHT_BITS = 8
@@ -118,7 +118,7 @@ def binary_to_colon_hex(b):
     if not valid_one_twenty_eight_bit_binary.match(b):
         raise ValueError
     hex_chunks = ['' for i in range(SIXTEEN_BITS // 2)]
-    for i in range(0, MAX_BITS, SIXTEEN_BITS):
+    for i in range(0, ONE_HUNDRED_TWENTY_EIGHT_BITS, SIXTEEN_BITS):
         sixteen_bits = b[i:i + SIXTEEN_BITS]
         hex_chunk = hex(int(sixteen_bits,2))[2:].lower()
         hex_chunks[i // SIXTEEN_BITS] = leading_zero_compression(hex_chunk)
