@@ -79,12 +79,9 @@
     font-size: 30px;
 }
 
-/* TODO: keep or update? */
-#taken-username {
+.taken-username {
     color: red;
     font-family: 'Zombie', sans-serif;
-    font-size: 20px;
-    display: none;
 }
 
 body {
@@ -113,4 +110,15 @@ canvas {
 
 #game {
   display: none;
+  width: 100%;
+text-align:center;
 }
+
+canvas {
+    display: inline;
+}
+
+#game h1 {
+    color: red;
+}
+ 
