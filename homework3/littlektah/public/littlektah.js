@@ -12,6 +12,8 @@
   const usernameFormInput = $("#username-input")
   const usernameFormButton = $("#join");
 
+  const MAX_PLAYER_NAME_LENGTH = 32;
+
   function clearCanvas() {
     ctx.clearRect(0, 0, 640, 640);
   }
@@ -103,6 +105,9 @@
     // document.querySelector(
     //   ".error"
     // ).innerHTML = `Name ${name} too short, too long, or taken`;
+    if (name.length > MAX_PLAYER_NAME_LENGTH) {
+      name = name.substring(0, MAX_PLAYER_NAME_LENGTH + 1) + '...';
+    }
     usernameInstructions.text(`Name ${name} too short, too long, or taken`);
     usernameInstructions.addClass("taken-username");
     // usernameInstructions.css("font-size", fontSize + "px");

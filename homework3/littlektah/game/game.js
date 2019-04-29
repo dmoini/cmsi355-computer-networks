@@ -34,7 +34,7 @@ exports.addPlayer = (name) => {
   if (
     name.length === 0 ||
     name.length > MAX_PLAYER_NAME_LENGTH ||
-    database.usednames.has(name)
+    (database.usednames.has(name))
   ) {
     return false;
   }

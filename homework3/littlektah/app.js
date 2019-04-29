@@ -17,12 +17,20 @@ app.get("/", (req, res) => {
   res.sendFile(__dirname + "/public/littlektah.html");
 });
 
+// TODO: create 5 zombies
+for (let i = 1; i <= 5; i += 1) {
+  let name = "ZOMBIE" + i;
+  game.addPlayer(name);
+}
+
+// NOTE:  io = server
+//        socket = client
 io.on("connection", socket => {
   const nameListener = (name) => {
     const trimmedName = name.trim();
     if (game.addPlayer(trimmedName)) {
       console.log("NAMES:", game.getUsedNames());
-      io.to(socket.id).emit("welcome");
+      socket.emit("welcome");
       io.emit("state", game.state());
       socket.removeListener("name", nameListener);
       
@@ -32,7 +40,7 @@ io.on("connection", socket => {
         io.emit("state", game.state());
       });
     } else {
-      io.to(socket.id).emit("badname", trimmedName);
+      socket.emit("badname", trimmedName);
     }
   };
   socket.on("name", nameListener);

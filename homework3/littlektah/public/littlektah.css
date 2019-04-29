@@ -118,7 +118,7 @@ canvas {
     display: inline;
 }
 
-#game h1 {
+#game h1, h2, h3 {
     color: red;
 }
  
