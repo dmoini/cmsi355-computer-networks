@@ -11,10 +11,6 @@
   const usernameInstructions = $("#username-instructions");
   const usernameFormInput = $("#username-input");
   const usernameFormButton = $("#join");
-  const scoreTracker = $("#score");
-  // let currentScore = 0;
-  const healthBar = $("#health");
-  // let currentHealth = 20;
   const MAX_PLAYER_NAME_LENGTH = 32;
   const radius = 10;
 
@@ -29,15 +25,6 @@
     ctx.clearRect(0, 0, 640, 640);
   }
 
-  const getRandomColor = () => {
-    const letters = "0123456789ABCDEF";
-    let color = "#";
-    for (let i = 0; i < 6; i++) {
-      color += letters[Math.floor(Math.random() * 16)];
-    }
-    return color;
-  };
-
   const fillCell = (row, column, text, textColor, backgroundColor) => {
     if (backgroundColor) {
       ctx.fillStyle = backgroundColor;
@@ -49,7 +36,6 @@
   };
 
   const drawPlayers = gameState => {
-    console.log("DRAWING PLAYERS:", gameState);
     gameState.positions
       .filter(data => !data[0].startsWith("zombie"))
       .forEach(([name, position]) => {
@@ -63,7 +49,6 @@
   };
 
   const drawZombies = gameState => {
-    console.log("DRAWING ZOMBIES");
     gameState.positions
       .filter(data => data[0].startsWith("zombie"))
       .forEach(([name, position]) => {
@@ -81,10 +66,8 @@
   //   table headers intact. Then iterate through the name-score pairs and add new rows to
   //   the table. We trust the server to send us the scores in the correct sorted order.
   function drawScores(gameState) {
-    console.log("GAMESTATE", gameState);
     document.querySelectorAll("tr.score").forEach(e => e.remove());
     gameState.scores.forEach(([name, score]) => {
-      console.log("DRAWSCORES", name, score);
       const tableRow = document.createElement("tr");
       tableRow.innerHTML = `<td>${name}<td>${score}`;
       tableRow.className = "score";
@@ -128,7 +111,6 @@
   // When the server tells us the name is bad, render an error message.
   // let fontSize = 20;
   socket.on("badname", name => {
-    console.log(`NAME ${name} taken`);
     if (name.length > MAX_PLAYER_NAME_LENGTH) {
       name = name.substring(0, MAX_PLAYER_NAME_LENGTH + 1) + "...";
     }
@@ -141,21 +123,16 @@
   });
 
   socket.on("playerDead", () => {
-    console.log("PLAYER HAS DIED");
-    // const deaths = document.querySelector("deaths");
-    // deaths.textContent = "Someone has died";
     $("#deaths").append($("<h2></h2>").text("Someone has died"));
     setTimeout(() => {
       $("#deaths").empty();
     }, 2000);
-    // alert("someone has died!");
   });
 
   // When the server sends us the `welcome` message, hide the lobby for and show the game board.
   socket.on("welcome", () => {
     $("#login").hide();
     $("#game").show();
-    setInterval(beginIncrementingScore, 1000);
   });
 
   // When the server sends us a `state` message, render the game state it sends us.

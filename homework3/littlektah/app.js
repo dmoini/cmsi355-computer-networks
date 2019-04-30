@@ -26,22 +26,17 @@ const initializeZombies = () => {
   }
 };
 
-// NOTE:  io = server
-//        socket = client
 io.on("connection", socket => {
   const nameListener = name => {
     const trimmedName = name.trim();
     if (game.addPlayer(trimmedName, socket)) {
-      console.log("NAMES:", game.getUsedNames());
       io.to(socket.id).emit("welcome");
       io.emit("state", game.state());
       socket.removeListener("name", nameListener);
 
       socket.on("move", mousePosition => {
-        console.log("Mouse position", mousePosition);
         game.move(mousePosition, trimmedName);
         io.emit("state", game.state());
-        // io.emit("test");
       });
     } else {
       socket.emit("badname", trimmedName);
@@ -63,19 +58,11 @@ const updateZombies = () => {
 };
 
 const updateScores = () => {
-  console.log("SERVE UPDATE SCORE");
   game.updateScores(game.state());
   io.emit("state", game.state());
 };
 
-// const updateHealth = () => {
-//   game.updateHealth();
-//   // io.emit("state", game.state());
-// };
-
-// TODO: divide 1000 by FRAMES_PER_SECOND
 setInterval(updateZombies, ONE_SECOND / FRAMES_PER_SECOND);
 setInterval(updateScores, ONE_SECOND);
-// setInterval(updateHealth, ONE_SECOND);
 
 initializeZombies();
