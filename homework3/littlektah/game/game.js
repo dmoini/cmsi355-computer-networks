@@ -8,77 +8,57 @@
  *   - state()
  */
 
-const { randomPoint, permutation, clamp } = require("./gameutils");
+const { randomPoint, permutation, clamp, outOfBounds } = require("./gameutils");
 
 const WIDTH = 640;
 const HEIGHT = 640;
 const MAX_PLAYER_NAME_LENGTH = 32;
 const RADIUS = 10;
+// TODO: change to 20
+const STARTING_HEALTH = 20;
 // const NUM_COINS = 100;
-
 
 const database = {
   usednames: new Set(),
   scores: {},
   health: {},
+  dead: new Set(),
+  id: {},
   // coins: {},
 };
 
-function getRandomColor() {
-  var letters = "0123456789ABCDEF";
-  var color = "#";
-  for (var i = 0; i < 6; i++) {
-    color += letters[Math.floor(Math.random() * 16)];
-  }
-  return color;
-}
-
-exports.addPlayer = (name) => {
+exports.addPlayer = (name, socket) => {
   if (
     name.length === 0 ||
     name.length > MAX_PLAYER_NAME_LENGTH ||
-    (database.usednames.has(name))
+    database.usednames.has(name)
   ) {
     return false;
   }
   database.usednames.add(name);
   database[`player:${name}`] = randomPoint(WIDTH, HEIGHT).toString();
   database.scores[name] = 0;
+  database.health[name] = STARTING_HEALTH;
+  database.id[name] = socket.id;
   console.log("addPlayer:", database);
   return true;
 };
 
 // TODO
-exports.addZombie = (name) => {
+exports.addZombie = name => {
   database[`zombie:${name}`] = randomPoint(WIDTH, HEIGHT).toString();
-  console.log("addZombie:", database)
-}
+  console.log("DATABASE:", database);
+};
 
 // TODO: delete when done. Only here for testing
 exports.getUsedNames = () => {
   return database.usednames;
-}
+};
 
-// function placeCoins() {
-//   permutation(WIDTH * HEIGHT)
-//     .slice(0, NUM_COINS)
-//     .forEach((position, i) => {
-//       const coinValue = i < 50 ? 1 : i < 75 ? 2 : i < 95 ? 5 : 10;
-//       const index = `${Math.floor(position / WIDTH)},${Math.floor(
-//         position % WIDTH
-//       )}`;
-//       database.coins[index] = coinValue;
-//     });
-// }
-
-// Return only the parts of the database relevant to the client. The client only cares about
-// the positions of each player, the scores, and the positions (and values) of each coin.
-// Note that we return the scores in sorted order, so the client just has to iteratively
-// walk through an array of name-score pairs and render them.
 exports.state = () => {
   // TODO: add key.startswith zombie: ???
   const positions = Object.entries(database)
-    .filter(([key]) => (key.startsWith("player:") || key.startsWith("zombie:")))
+    .filter(([key]) => key.startsWith("player:") || key.startsWith("zombie:"))
     .map(([key, value]) => [key.substring(7), value]);
   console.log(`POSITIONS: ${JSON.stringify(positions)}`);
   const scores = Object.entries(database.scores);
@@ -86,49 +66,81 @@ exports.state = () => {
   return {
     positions,
     scores,
-    coins: database.coins,
+    // coins: database.coins,
   };
 };
 
 exports.move = (direction, name) => {
   if (direction) {
+    console.log("DATABASE", database);
     const playerKey = `player:${name}`;
-    // console.log(database);
-    const [x, y] = database[playerKey].split(",");
-    console.log("Old XY", [x, y]);
-    console.log("direction", direction);
-    const [newX, newY] = direction
-      .substring(1, direction.length - 1)
-      .split(",");
-    console.log("NewXY:", [newX, newY]);
-    database[playerKey] = `${newX},${newY}`;
-    console.log("=========================================");
+    if (database[playerKey]) {
+      const [x, y] = database[playerKey].split(",");
+      const [newX, newY] = direction
+        .substring(1, direction.length - 1)
+        .split(",");
+      database[playerKey] = `${newX},${newY}`;
+    }
   }
 };
 
-const inBounds = (x, y) => {
-  return x <= WIDTH - radius && x >= radius && y <= HEIGHT - radius && y >= radius;
-}
-
-const calculateDistance = (x1, y1, x2, y2) => {
-  return Math.hypot(x2 - x1, y2 - y1);
-}
-
 const findNearestPlayer = (x, y, gameState) => {
-  const players = gameState.positions.filter(data => !data[0].startsWith("zombie"));
+  let nearestDistance = Number.POSITIVE_INFINITY;
   let nearestPlayer = "";
+
+  const players = gameState.positions.filter(
+    data => !data[0].startsWith("zombie")
+  );
+  console.log("PLAYERS", players);
   players.forEach(p => {
     const [px, py] = p[1].split(",").map(n => +n);
     const distance = Math.hypot(px - x, py - y);
-    
-  })
+    if (distance < nearestDistance) {
+      //and player isn't dead I guess
+      nearestDistance = distance;
+      nearestPlayer = p[0];
+    }
+  });
   return nearestPlayer;
+};
+
+function pushOffIfNecessary(z1, z2) {
+  console.log("z1", z1);
+  console.log("z2", z2);
+  let [zx1, zy1] = database[z1].split(",").map(n => +n);
+  let [zx2, zy2] = database[z2].split(",").map(n => +n);
+
+  let [dx, dy] = [zx2 - zx1, zy2 - zy1];
+  const distance = Math.hypot(dx, dy);
+  let overlap = RADIUS * 2 - distance;
+  let contact = false;
+  if (overlap > 0) {
+    contact = true;
+    const adjustX = (overlap / 2) * (dx / distance);
+    const adjustY = (overlap / 2) * (dy / distance);
+    zx1 -= adjustX;
+    zy1 -= adjustY;
+    zx2 += adjustX;
+    zy2 += adjustY;
+  }
+  if (outOfBounds(zx1, zx2, zy1, zy2, HEIGHT, WIDTH, RADIUS)) {
+    database[z1] = `${zx1},${zy1}`;
+    database[z2] = `${zx2},${zy2}`;
+  }
+  return z1.startsWith("player") && contact;
 }
 
-exports.updateZombies = (gameState) => {
-  // const players = gameState.positions.filter(data => !data[0].startsWith("zombie"));
-  const zombies = gameState.positions.filter(data => data[0].startsWith("zombie"));
-  console.log("ZOMBIES", zombies);
+exports.updateZombies = gameState => {
+  // console.log("GS:", gameState);
+  // console.log("DATABASE", Object.entries(database));
+  const zombies = gameState.positions.filter(data =>
+    data[0].startsWith("zombie")
+  );
+  const players = gameState.positions.filter(
+    data => !data[0].startsWith("zombie")
+  );
+  //   console.log(players);
+
   zombies.forEach(z => {
     const zombieKey = `zombie:${z[0]}`;
     const [zx, zy] = database[zombieKey].split(",").map(n => +n);
@@ -136,38 +148,71 @@ exports.updateZombies = (gameState) => {
     if (nearestPlayer === "") {
       return;
     }
-
-
-    
-    
-    
-    
-    
-    
-    
-    
-    // const zombieKey = `zombie:${z[0]}`;
-    // console.log("ZOMBIE KEY:", zombieKey);
-    // const [zx, zy] = z[1].split(",");
-    // let [closestPX, closestPY] = [null, null];
-    // let shortestDistance = Number.POSITIVE_INFINITY;
-    // players.forEach(p => {
-    //   const [px, py] = p[1].split(",");
-    //   const [dx, dy] = [zx - px, zy - py];
-    //   const distance = Math.hypot(dx, dy);
-    //   if (distance < shortestDistance) {
-    //     [closestPX, closestPY] = [px, py];
-    //     shortestDistance = distance;
-    //   }
-    // });
-    // // console.log(ß)
-    // let [newZX, newZY] = [(newPx - zx), (newPy - zy)];
-    // // newZX += newPx /40;
-    // console.log(newZX, newZY);
-    // // if (inBounds(newZX, newZY)) {
-    // database[zombieKey] = `${newZX},${newZY}`;
-    // // }
+    const [px, py] = database[`player:${nearestPlayer}`]
+      .split(",")
+      .map(n => +n);
+    let [newZX, newZY] = [zx - (zx - px) / 20, zy - (zy - py) / 20];
+    zombies
+      .filter(data => data[0].substring(0, 14) !== `${z[0]}`)
+      .forEach(z1 => {
+        pushOffIfNecessary(`zombie:${z[0]}`, `zombie:${z1[0]}`);
+      });
+    players.forEach(p => {
+      console.log("PLAYER", p[0]);
+      if (pushOffIfNecessary(`player:${p[0]}`, `zombie:${z[0]}`)) {
+        database.health[`${p[0]}`]--;
+        console.log(database);
+        if (database.health[`${p[0]}`] <= 0) {
+          database.dead.add(`${p[0]}`);
+        }
+      }
+    });
+    database[zombieKey] = `${newZX},${newZY}`;
   });
 };
+
+exports.checkIfDead = () => {
+  let somebodyDied = false;
+  let socketIDs = new Set();
+  database.dead.forEach(p => {
+    socketIDs.add(database.id[p]);
+    database.usednames.delete(p);
+    delete database[`player:${p}`];
+    delete database.health[p];
+    delete database.scores[p];
+    database.dead.delete(p);
+    delete database.id[p];
+    // somebodyDied = true;
+  });
+  return socketIDs;
+};
+
+exports.updateScores = () => {
+  const players = Object.entries(database).filter(
+    data =>
+      !(data[0] instanceof Object || data[0] instanceof Set) &&
+      data[0].startsWith("player")
+  );
+  console.log("UPDATESCORES PLAYERS", players);
+  players.forEach(p => {
+    database.scores[p[0].substring(7)] += 1;
+  });
+  // console.log("UPDATE SCORES", players);
+};
+
+// exports.updateHealth = gameState => {
+//   const players = Object.entries(database).filter(
+//     data => data[0] instanceof Object && data[0].startsWith("player").map()
+//   );
+//   players.forEach(p => {
+//     p = p.substring(7);
+//     // pseudocode
+//     // if collision b/w player and zombie
+//     //    decrease health
+//     //    if health == 0
+//     //      return false
+//   });
+//   return true;
+// };
 
 // placeCoins();

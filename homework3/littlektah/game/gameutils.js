@@ -5,6 +5,15 @@ exports.randomPoint = (maxX, maxY) => [
   Math.floor(Math.random() * maxY),
 ];
 
+exports.outOfBounds = (x1, x2, y1, y2, height, width, radius) => {
+  return (
+    x1 <= width - radius &&
+    x2 >= radius &&
+    y1 <= height - radius &&
+    y2 >= radius
+  );
+};
+
 // Returns an array of size n with the values 0..n-1 in random positions.
 exports.permutation = n => {
   const array = Array(n)
