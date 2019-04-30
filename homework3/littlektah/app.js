@@ -18,12 +18,6 @@ app.get("/", (req, res) => {
   res.sendFile(__dirname + "/public/littlektah.html");
 });
 
-// NOTE: creates 5 zombie players
-// TODO: use addZombie function
-// for (let i = 1; i <= 5; i += 1) {
-//   let name = "ZOMBIE" + i;
-//   game.addPlayer(name);
-// }
 const initializeZombies = () => {
   for (let i = 1; i <= 5; i++) {
     game.addZombie("zombie" + i);
@@ -55,9 +49,12 @@ io.on("connection", socket => {
 });
 
 const updateZombies = () => {
-  io.emit("update zombies");
+  game.updateZombies(game.state());
+  // console.log("APP.JS UPDATING ZOMBIES")
+  io.emit("state", game.state());
 }
 
-setInterval(updateZombies, 1000 / 1);
+// TODO: divide 1000 by framesPerSecond
+setInterval(updateZombies, 1000 / framesPerSecond);
 
 initializeZombies();

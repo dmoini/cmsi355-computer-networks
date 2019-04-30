@@ -1,3 +1,5 @@
+exports.clamp = (value, low, high) => Math.max(low, Math.min(high, value));
+
 exports.randomPoint = (maxX, maxY) => [
   Math.floor(Math.random() * maxX),
   Math.floor(Math.random() * maxY),

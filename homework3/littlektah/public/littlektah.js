@@ -16,6 +16,7 @@
   const healthBar = $("#health");
   let currentHealth = 20;
   const MAX_PLAYER_NAME_LENGTH = 32;
+  const radius = 10;
 
   const renderBoard = (gameState) => {
     clearCanvas();
@@ -42,7 +43,7 @@
     if (backgroundColor) {
       ctx.fillStyle = backgroundColor;
       ctx.beginPath();
-      ctx.arc(row, column, 10, 0, 2 * Math.PI);
+      ctx.arc(row, column, radius, 0, 2 * Math.PI);
       ctx.fill();
       ctx.stroke();
     }
@@ -89,10 +90,10 @@
 
   canvas.addEventListener("mousemove", e => {
     const rect = canvas.getBoundingClientRect();
-    let [x, y] = [e.clientX - 10 - rect.left, e.clientY - 10 - rect.top];
+    let [x, y] = [e.clientX - radius - rect.left, e.clientY - radius - rect.top];
     x += e.clientX / 40;
     y += e.clientY / 40;
-    if (x <= 630 && x >= 10 && y <= 630 && y >= 10) {
+    if (x <= canvas.width - radius && x >= radius && y <= canvas.height - radius && y >= radius) {
       socket.emit("move", JSON.stringify([x, y]));
     }
     e.preventDefault();
@@ -106,15 +107,16 @@
      }
   });
 
+  // TODO: add to game/game.js to add to database
   const beginIncrementingScore = () => {
     currentScore++;
     scoreTracker.text("Score: " + currentScore);
   };
 
-  socket.on("update zombies", () => {
-    console.log("UPDATING ZOMBIES")
-    // const zombies = 
-  });
+  // socket.on("update zombies", () => {
+  //   console.log("UPDATING ZOMBIES")
+  //   // const zombies = 
+  // });
 
   // When the server tells us the name is bad, render an error message.
   // let fontSize = 20;

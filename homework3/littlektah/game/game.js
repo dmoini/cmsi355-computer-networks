@@ -8,16 +8,19 @@
  *   - state()
  */
 
-const { randomPoint, permutation } = require("./gameutils");
+const { randomPoint, permutation, clamp } = require("./gameutils");
 
 const WIDTH = 640;
 const HEIGHT = 640;
 const MAX_PLAYER_NAME_LENGTH = 32;
-const NUM_COINS = 100;
+const RADIUS = 10;
+// const NUM_COINS = 100;
+
 
 const database = {
-  scores: {},
   usednames: new Set(),
+  scores: {},
+  health: {},
   // coins: {},
 };
 
@@ -101,6 +104,70 @@ exports.move = (direction, name) => {
     database[playerKey] = `${newX},${newY}`;
     console.log("=========================================");
   }
+};
+
+const inBounds = (x, y) => {
+  return x <= WIDTH - radius && x >= radius && y <= HEIGHT - radius && y >= radius;
+}
+
+const calculateDistance = (x1, y1, x2, y2) => {
+  return Math.hypot(x2 - x1, y2 - y1);
+}
+
+const findNearestPlayer = (x, y, gameState) => {
+  const players = gameState.positions.filter(data => !data[0].startsWith("zombie"));
+  let nearestPlayer = "";
+  players.forEach(p => {
+    const [px, py] = p[1].split(",").map(n => +n);
+    const distance = Math.hypot(px - x, py - y);
+    
+  })
+  return nearestPlayer;
+}
+
+exports.updateZombies = (gameState) => {
+  // const players = gameState.positions.filter(data => !data[0].startsWith("zombie"));
+  const zombies = gameState.positions.filter(data => data[0].startsWith("zombie"));
+  console.log("ZOMBIES", zombies);
+  zombies.forEach(z => {
+    const zombieKey = `zombie:${z[0]}`;
+    const [zx, zy] = database[zombieKey].split(",").map(n => +n);
+    const nearestPlayer = findNearestPlayer(zx, zy, gameState);
+    if (nearestPlayer === "") {
+      return;
+    }
+
+
+    
+    
+    
+    
+    
+    
+    
+    
+    // const zombieKey = `zombie:${z[0]}`;
+    // console.log("ZOMBIE KEY:", zombieKey);
+    // const [zx, zy] = z[1].split(",");
+    // let [closestPX, closestPY] = [null, null];
+    // let shortestDistance = Number.POSITIVE_INFINITY;
+    // players.forEach(p => {
+    //   const [px, py] = p[1].split(",");
+    //   const [dx, dy] = [zx - px, zy - py];
+    //   const distance = Math.hypot(dx, dy);
+    //   if (distance < shortestDistance) {
+    //     [closestPX, closestPY] = [px, py];
+    //     shortestDistance = distance;
+    //   }
+    // });
+    // // console.log(ß)
+    // let [newZX, newZY] = [(newPx - zx), (newPy - zy)];
+    // // newZX += newPx /40;
+    // console.log(newZX, newZY);
+    // // if (inBounds(newZX, newZY)) {
+    // database[zombieKey] = `${newZX},${newZY}`;
+    // // }
+  });
 };
 
 // placeCoins();
