@@ -7,6 +7,7 @@ const app = express();
 const server = require("http").Server(app);
 const io = require("socket.io")(server);
 const game = require("./game/game");
+const framesPerSecond = 24;
 
 server.listen(50000, () =>
   console.log("Little K'tah server is running on port 50000")
@@ -44,7 +45,7 @@ io.on("connection", socket => {
         console.log("Mouse position", mousePosition);
         game.move(mousePosition, trimmedName);
         io.emit("state", game.state());
-        io.emit("test");
+        // io.emit("test");
       });
     } else {
       socket.emit("badname", trimmedName);
@@ -52,5 +53,11 @@ io.on("connection", socket => {
   };
   socket.on("name", nameListener);
 });
+
+const updateZombies = () => {
+  io.emit("update zombies");
+}
+
+setInterval(updateZombies, 1000 / 1);
 
 initializeZombies();

@@ -2,7 +2,7 @@
 (() => {
   const socket = io(); // eslint-disable-line no-undef
   const canvas = document.querySelector("canvas");
-  const tableBody = document.querySelector("tbody");
+  // const tableBody = document.querySelector("tbody");
 
   const ctx = canvas.getContext("2d");
   ctx.textAlign = "center";
@@ -11,7 +11,10 @@
   const usernameInstructions = $("#username-instructions");
   const usernameFormInput = $("#username-input")
   const usernameFormButton = $("#join");
-
+  const scoreTracker = $("#score");
+  let currentScore = 0;
+  const healthBar = $("#health");
+  let currentHealth = 20;
   const MAX_PLAYER_NAME_LENGTH = 32;
 
   const renderBoard = (gameState) => {
@@ -84,9 +87,6 @@
     socket.emit("name", usernameFormInput.val().toUpperCase());
   });
 
-  // When an arrow key is pressed, send a `move` message with a single-character argument
-  // to the server.
-
   canvas.addEventListener("mousemove", e => {
     const rect = canvas.getBoundingClientRect();
     let [x, y] = [e.clientX - 10 - rect.left, e.clientY - 10 - rect.top];
@@ -106,31 +106,34 @@
      }
   });
 
-  socket.on("test", () => {
-    // drawZombies();
+  const beginIncrementingScore = () => {
+    currentScore++;
+    scoreTracker.text("Score: " + currentScore);
+  };
+
+  socket.on("update zombies", () => {
+    console.log("UPDATING ZOMBIES")
+    // const zombies = 
   });
 
   // When the server tells us the name is bad, render an error message.
   // let fontSize = 20;
   socket.on("badname", (name) => {
     console.log(`NAME ${name} taken`)
-    // document.querySelector(
-    //   ".error"
-    // ).innerHTML = `Name ${name} too short, too long, or taken`;
     if (name.length > MAX_PLAYER_NAME_LENGTH) {
       name = name.substring(0, MAX_PLAYER_NAME_LENGTH + 1) + '...';
     }
     usernameInstructions.text(`Name ${name} too short, too long, or taken`);
     usernameInstructions.addClass("taken-username");
-    // usernameInstructions.css("font-size", fontSize + "px");
   });
 
   // When the server sends us the `welcome` message, hide the lobby for and show the game board.
   socket.on("welcome", () => {
     $("#login").hide();
     $("#game").show();
+    setInterval(beginIncrementingScore, 1000);
   });
 
   // When the server sends us a `state` message, render the game state it sends us.
-  socket.on("state", renderBoard);
+  socket.on("state", renderBoard);  
 })();
