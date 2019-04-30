@@ -14,6 +14,14 @@
 
   const MAX_PLAYER_NAME_LENGTH = 32;
 
+  const renderBoard = (gameState) => {
+    clearCanvas();
+    // drawCoins(gameState);
+    drawPlayers(gameState);
+    drawZombies(gameState);
+    // drawScores(gameState);
+  }
+
   function clearCanvas() {
     ctx.clearRect(0, 0, 640, 640);
   }
@@ -37,23 +45,25 @@
     }
   }
 
-  const drawPlayersAndZombies = (gameState) => {
-    gameState.positions.forEach(([name, position]) => {
-      console.log("NAME:", name);
-      let color = name.startsWith("zombie") ? "#000000" : "#00FFFF";
-      fillCell(...position.split(","), name[0].toUpperCase(), "white", color);
+  const drawPlayers = (gameState) => {
+    console.log("DRAWING PLAYERS:", gameState);
+    gameState.positions.filter(data => !data[0].startsWith("zombie")).forEach(([name, position]) => {
+      fillCell(...position.split(","), name[0].toUpperCase(), "white", "#00FFFF");
     });
   }
 
-  // const drawZombies = (gameState) => {
+  const drawZombies = (gameState) => {
+    console.log("DRAWING ZOMBIES");
+    gameState.positions.filter(data => data[0].startsWith("zombie")).forEach(([name, position]) => {
+      fillCell(...position.split(","), name[0].toUpperCase(), "white", "#000000");
+    });
+  }
 
+  // const drawCoins = (gameState) => {
+  //   Object.entries(gameState.coins).forEach(([position, coinValue]) => {
+  //     fillCell(...position.split(","), coinValue, "black");
+  //   });
   // }
-
-  const drawCoins = (gameState) => {
-    Object.entries(gameState.coins).forEach(([position, coinValue]) => {
-      fillCell(...position.split(","), coinValue, "black");
-    });
-  }
 
   // To draw the scoreboard, first remove all the table rows corresponding to scores
   // (these are the <tr> elements with the `score` class). This leaves the rows with the
@@ -68,13 +78,6 @@
   //       tableBody.appendChild(tableRow);
   //     });
   //   }
-
-  const renderBoard = (gameState) => {
-    clearCanvas();
-    // drawCoins(gameState);
-    drawPlayersAndZombies(gameState);
-    // drawScores(gameState);
-  }
 
   // When the join button is clicked, send the name to the server in a `name` message.
   usernameFormButton.on("click", () => {
@@ -94,7 +97,6 @@
     }
     e.preventDefault();
   });
-  
 
   usernameFormInput.keypress((e) => {
     let key = e.which;
@@ -102,7 +104,11 @@
        usernameFormButton.click();
        return false;  
      }
-   });
+  });
+
+  socket.on("test", () => {
+    // drawZombies();
+  });
 
   // When the server tells us the name is bad, render an error message.
   // let fontSize = 20;

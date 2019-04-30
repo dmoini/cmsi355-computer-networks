@@ -44,6 +44,7 @@ io.on("connection", socket => {
         console.log("Mouse position", mousePosition);
         game.move(mousePosition, trimmedName);
         io.emit("state", game.state());
+        io.emit("test");
       });
     } else {
       socket.emit("badname", trimmedName);
