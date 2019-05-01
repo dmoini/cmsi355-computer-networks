@@ -1,0 +1,139 @@
+@font-face {
+  font-family: "Zombie";
+  src: url("fonts/zombie/zombie-webfont.woff2") format("woff2"),
+    url("fonts/zombie/zombie-webfont.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
+/***** LOGIN *****/
+
+/* Credit to https://codepen.io/colorlib/pen/rxddKy for login page CSS */
+
+#login h1 {
+  color: #4caf50;
+  font-size: 100px;
+}
+
+#login {
+  width: 360px;
+  padding: 8% 0 0;
+  margin: auto;
+}
+
+.form {
+  position: relative;
+  z-index: 1;
+  background: #ffffff;
+  max-width: 360px;
+  margin: 0 auto 100px;
+  padding: 20px;
+  text-align: center;
+  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+}
+
+.form #username-input {
+  font-family: "Zombie", sans-serif;
+  outline: 0;
+  background: #f2f2f2;
+  width: 100%;
+  border: 0;
+  margin: 0 0 15px;
+  padding: 15px;
+  box-sizing: border-box;
+  font-size: 14px;
+}
+
+.form #join {
+  font-family: "Zombie", sans-serif;
+  text-transform: uppercase;
+  outline: 0;
+  background: #4caf50;
+  width: 100%;
+  border: 0;
+  padding: 15px;
+  color: #ffffff;
+  font-size: 14px;
+  -webkit-transition: all 0.3 ease;
+  transition: all 0.3 ease;
+  cursor: pointer;
+}
+
+.form #username-button:hover,
+.form #username-button:active,
+.form #username-button:focus {
+  background: #43a047;
+}
+
+.form .message {
+  margin: 15px 0 0;
+  color: #b3b3b3;
+  font-size: 12px;
+}
+
+.form .message a {
+  color: #4caf50;
+  text-decoration: none;
+}
+
+#login-form p {
+  color: black;
+  font-size: 30px;
+}
+
+.taken-username {
+  color: red;
+  font-family: "Zombie", sans-serif;
+}
+
+body {
+  background: #76b852; /* fallback for old browsers */
+  background: -webkit-linear-gradient(right, #76b852, #8dc26f);
+  background: -moz-linear-gradient(right, #76b852, #8dc26f);
+  background: -o-linear-gradient(right, #76b852, #8dc26f);
+  background: linear-gradient(to left, #76b852, #8dc26f);
+  background-image: url("images/login-background.jpeg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  font-family: "Zombie", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/***** GAME *****/
+
+body {
+  margin: 20px;
+}
+
+canvas {
+  background-color: #dfd;
+}
+
+#game {
+  display: none;
+  width: 100%;
+  text-align: center;
+}
+
+canvas {
+  display: inline;
+}
+
+#game h1,
+h2,
+h3 {
+  color: red;
+}
+
+table {
+  color: white;
+}
+
+th,
+tr {
+  font-size: 30px;
+}
+
+#deaths h2 {
+}
