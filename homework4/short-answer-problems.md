@@ -49,4 +49,4 @@
 - The disadvantage of this configuration is that it is more secure to specify which packets are allowed and using denial could possible mean that some useful packets are denied. Since this is manually configured, user error could occur from denying the wrong packets.
 
 30.21) Consider a DPI system that searches for a string of K bytes in each packet. If a packet contains 1486 bytes of payload, what is the worst case number of comparisons that must be made to examine the packet assuming a straightforward matching algorithm?
-- K * (1486 + 20 - K + 1) * 8
+- K * (1486 + 20)
