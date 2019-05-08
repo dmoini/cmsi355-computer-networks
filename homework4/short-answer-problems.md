@@ -13,7 +13,7 @@
 26.12) How does TCP compute a timeout for retransmission?
 - TCP estimates round-trip delay for each active connection by measuring the time needed to receive a response. TCP then computes a weighted average from a sequence of these round-trip estimates. TCP also keeps an estimate of the variance, and uses both the weighted average and variance to compute a timeout for retransmission.
 
-26.15) Suppose two programs use TCP to establish a connection, communicate, terminate the connection, and then open a new connection. Further suppose a FIN message sent to shut down the first connection is duplicated and delayed until the second connection has been established. If a copy of the old FIN is delivered, will TCP terminate the new connection? Why or why not?
+26.15) Suppose two programs use TCP to establish a connection, communicate, terminate the connection, and then open a new connection. Further suppose a FIN message sent to shut down the first connection is duplicated and delayed until the second connection has been established. If a copy of the old FIN is delivered, will TCP terminate the new connection? Why or why not?S
 - No. TCP requires each end of a new connection to generate a random 32-bit sequence number that becomes the initial sequence for data sent. When the programs reconnect, they generate a new random 32-bit sequence number for the new connection. When the FIN is received, it will have the sequence number from the first connection and not match the sequence of the current connection. Knowing that the sequences do not match, the receiver rejects the old FIN and does not terminate the new connection.
 
 27.2) What two entries are needed in the forwarding table of a typical host?
