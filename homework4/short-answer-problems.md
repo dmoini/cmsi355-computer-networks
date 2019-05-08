@@ -25,7 +25,6 @@
 - The address of the directly connected network for the host and a default route that directs all other traffic to another specific router.
 
 30.8) List and describe the eight basic security techniques.
-
 1. **Hashing:** Typical encoding schemes use cryptographic hashing methods. One hashing scheme relies on a secret key known only to the sender and receiver. The sender takes a message as input, uses the key to compute a hash, H, and transmits H along with the message. H is a short string of bits, and the length of H is independent of the message size. The receiver uses the key to compute a hash of the message, and compares the hash to H. If the two agree, the message has arrived intact. An attacker, who does not have the secret key, will be unable to modify the message without intro- ducing an error. Thus, H provides message authentication because a receiver knows that a message that arrives with a valid hash is authentic.
 
 2. **Encryption:** Encryption can guarantee data confidentiality (privacy), message authenticity, data integrity and can prevent replay attacks. A sender applies encryption to scramble the bits of the message in a way that only the intended recipient can unscramble them. Many encryption technologies exist and can divided into two types depending on how the keys are used: private key encryption and public key encryption. Private key systems are when each pair of communication entites share a single key that is both the encryption and decryption key. A public system system assigns each entity a pair of keys, in which one case might be a single user. That user would have a secret private key and a public key published alongside the user's name. 
@@ -41,16 +40,13 @@
 8. **Virtual Private Networks (VPNs):** VPNs use encryption to provide secure access to an organization's intranet from remote sites. The advantage of using this creates a resulting network that is completely *private.* A VPN uses the internet to transfer data among sites and ensure that data cannot be accessed by outsiders. 
 
 30.11) Read about the Data Encryption Standard (DES). What size key should be used for data that is extremely important?
-
 - DES traditionally uses a 64-bit key for encryption, of which 8 bits are used for parity checks, limiting it to about 56 bits. For data that is extremely important, since 56 bits are considered weak, Triple DES (3DES) was introduced which essentially increased the size block by three times for a total of 192 bits. Thus, a 192-bit key (which would effectively be a 168-bit key with parity checks) size should be used for extremely important data.
 
 30.14) How can two parties use public key encryption to sign a contract that is then sent to a third party?
-
 - Using a public key encryption system, the two parties can sign that contract with their own private keys. The third party would then verify the signature by looking up the senders' public keys and using those keys to decrypt the message. Because each sender knows his/her private key, only the senders can encrypt a message that can be decoded with the public key.
   
 30.17) Many commercial firewall products allow a manager to specify packets to deny as well as packets to accept. What is the disadvantage of a configuration that allows denial?
-
 - The disadvantage of this configuration is that it is more secure to specify which packets are allowed and using denial could possible mean that some useful packets are denied. Since this is manually configured, user error could occur from denying the wrong packets.
 
 30.21) Consider a DPI system that searches for a string of K bytes in each packet. If a packet contains 1486 bytes of payload, what is the worst case number of comparisons that must be made to examine the packet assuming a straightforward matching algorithm?
-- N * (1486 + 20)
+- K * (1486 + 20 - K + 1) * 8
