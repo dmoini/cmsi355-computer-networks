@@ -1,5 +1,5 @@
 25.4) Calculate the size of the largest possible UDP message. (Hint: the entire UDP message must fit in an IP datagram.)
-- An IP data gram is 65535 bytes. This includes 20 bytes for the IP header and 8 bytes for the UDP header, so the largest possible UDP message is <img src="https://latex.codecogs.com/gif.latex?65535-20-8=65507" title="65535-20-8=65507" /> bytes.
+- An IP data gram is 65535 bytes. This includes 20 bytes for the IP header and 8 bytes for the UDP header, so the largest possible UDP message is 65535 - 20 - 8 = 65507 bytes.
 
 26.4) What are the main problems a transport protocol must solve to achieve reliable transfer?
 - Unreliable connection: messages sent across the Internet can be lost, duplicated, corrupted, delayed, or delivered out of order.
